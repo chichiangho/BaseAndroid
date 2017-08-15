@@ -28,6 +28,6 @@
         android:id="@+id/under_hint"
         android:layout_width="wrap_content"
         android:layout_height="2dp"
-        android:background="@color/titleBackgroundColor"
+        android:background="@color/tab_checked"
         android:visibility="gone" />
 </RelativeLayout>

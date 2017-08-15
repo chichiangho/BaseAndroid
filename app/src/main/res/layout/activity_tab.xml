@@ -13,7 +13,7 @@
 
     <View
         android:id="@+id/top_divider"
-        style="@style/DividerStyle"
+        style="@style/divider_style"
         android:visibility="gone" />
 
     <com.chichiangho.base.widgets.TabViewPager
@@ -24,7 +24,7 @@
 
     <View
         android:id="@+id/bottom_divider"
-        style="@style/DividerStyle"
+        style="@style/divider_style"
         android:visibility="gone" />
 
     <LinearLayout

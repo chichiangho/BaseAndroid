@@ -4,18 +4,18 @@
     android:layout_height="40dp">
 
     <TextView
-        android:id="@+id/footer_tv"
+        android:id="@+id/footerTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
     <ProgressBar
-        android:id="@+id/footer_progress"
+        android:id="@+id/footerProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:layout_toLeftOf="@id/footer_tv"
+        android:layout_toLeftOf="@id/footerTv"
         android:indeterminateDrawable="@drawable/holo_progress"
         android:maxHeight="16dp"
         android:maxWidth="16dp"

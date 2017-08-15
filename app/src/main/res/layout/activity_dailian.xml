@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chichiangho.base.widgets.TitleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/main_margin"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioLeft"
+            style="@style/radio_left_style"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:button="@null"
+            android:text="我要接单" />
+
+        <RadioButton
+            android:id="@+id/radioRight"
+            style="@style/radio_right_style"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:button="@null"
+            android:text="需求代练" />
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</com.chichiangho.base.widgets.TitleLayout>

@@ -12,7 +12,11 @@
     <color name="transparent">#00000000</color>
 
     <color name="divider_tab">#979797</color>
-    <color name="titleBackgroundColor">#002245</color>
     <color name="tab_text_normal">#BDBDBD</color>
     <color name="tab_text_checked">#00163B</color>
+
+    <color name="main_color">#db525a</color>
+    <color name="title_bg_color">@color/main_color</color>
+    <color name="tab_checked">@color/main_color</color>
+    <color name="tab_normal">@color/white</color>
 </resources>

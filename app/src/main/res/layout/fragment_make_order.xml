@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/item_label_style"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/text_middle_dark_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/main_margin"
+            android:text="游戏名称" />
+
+        <EditText
+            android:id="@+id/et_choose_game"
+            style="@style/text_middle_dark_grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="@color/transparent"
+            android:focusable="false"
+            android:hint="选择需要代练的游戏名称"
+            android:textColorHint="@color/light_grey" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View style="@style/divider_style" />
+
+            <TextView
+                style="@style/item_label_style"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/main_margin"
+                android:text="代练需求标题" />
+
+            <View style="@style/divider_style" />
+
+            <EditText
+                android:id="@+id/et_title"
+                style="@style/text_middle_dark_grey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:gravity="left|top"
+                android:hint="请输入您的代练需求标题（少于50字）"
+                android:maxLength="50"
+                android:minHeight="80dp"
+                android:padding="@dimen/main_margin"
+                android:textColorHint="@color/light_grey" />
+
+            <View style="@style/divider_style" />
+
+            <TextView
+                style="@style/item_label_style"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/main_margin"
+                android:text="代练内容" />
+
+            <View style="@style/divider_style" />
+
+            <EditText
+                android:id="@+id/et_description"
+                style="@style/text_middle_dark_grey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:gravity="left|top"
+                android:hint="请具体表述您的代练需求（少于200字）"
+                android:maxLength="200"
+                android:minHeight="120dp"
+                android:padding="@dimen/main_margin"
+                android:textColorHint="@color/light_grey" />
+
+            <View style="@style/divider_style" />
+
+            <TextView
+                style="@style/item_label_style"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/main_margin"
+                android:text="上传图片" />
+
+            <View style="@style/divider_style" />
+
+            <com.chichiangho.base.widgets.ImageSelectorView
+                android:id="@+id/photo_selector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View style="@style/divider_style" />
+
+            <LinearLayout
+                style="@style/item_label_style"
+                android:layout_width="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/text_middle_dark_grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/main_margin"
+                    android:text="要求完成时间：" />
+
+                <EditText
+                    android:id="@+id/et_choose_time"
+                    style="@style/text_middle_dark_grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/transparent"
+                    android:focusable="false"
+                    android:hint="选择代练完成的时间段"
+                    android:textColorHint="@color/light_grey" />
+            </LinearLayout>
+
+            <View style="@style/divider_style" />
+
+            <LinearLayout
+                style="@style/item_label_style"
+                android:layout_width="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/text_middle_dark_grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/main_margin"
+                    android:text="价格"
+                    android:textColor="@color/title_bg_color" />
+
+                <EditText
+                    android:id="@+id/et_input_price"
+                    style="@style/text_middle_dark_grey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:focusable="false"
+                    android:hint="请输入代练金额"
+                    android:textColorHint="@color/light_grey" />
+
+                <Button
+                    android:id="@+id/btn_calculate_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/btn_stroke_red"
+                    android:text="价格计算器"
+                    android:textColor="@color/title_bg_color"
+                    android:textSize="@dimen/size_small" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="@dimen/main_margin"
+                android:background="@drawable/btn_solid_red"
+                android:text="提交"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_middle" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
