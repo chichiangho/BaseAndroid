@@ -22,7 +22,6 @@ import com.chichiangho.base.R
 class RefreshRecyclerView : SwipeRefreshLayout {
     private var listener: RefreshListener? = null
     private var recyclerView: RecyclerView? = null
-    private var lastRequestTime: Long = 0
     private var touchEnd: Boolean = false//是否有更多数据，true没有
     private var notFill: Boolean = false//数据是否充满RecyclerView，true没有
     private var loadingMore: Boolean = false
@@ -47,7 +46,7 @@ class RefreshRecyclerView : SwipeRefreshLayout {
                 android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light)
 
-        for (i in 0..childCount - 1) {
+        for (i in 0 until childCount) {
             if (getChildAt(i) is RecyclerView) {
                 recyclerView = getChildAt(i) as RecyclerView
                 break
@@ -71,14 +70,14 @@ class RefreshRecyclerView : SwipeRefreshLayout {
                 if (touchEnd || notFill || loadingMore || isRefreshing)
                     return false
 
-                if (valueAnimator?.isRunning ?: false)
+                if (valueAnimator?.isRunning == true)
                     return false
 
                 when (motionEvent.action) {
                     MotionEvent.ACTION_MOVE -> {
                         if (motionStart == 0f)
                             motionStart = motionEvent.rawY
-                        if (!pulling && !(recyclerView?.canScrollVertically(1) ?: false)) {
+                        if (!pulling && recyclerView?.canScrollVertically(1) != true) {
                             mFirstY = motionEvent.rawY
                             pulling = true
                         }
@@ -95,7 +94,7 @@ class RefreshRecyclerView : SwipeRefreshLayout {
                         if (distance > 0 && motionStart + 50 > motionEnd) {
                             motionStart = 0f
                             if (footerView != null) {
-                                valueAnimator = ObjectAnimator.ofFloat(distance, resources.getDimension(R.dimen.refresh_footer_height)).setDuration(distance.toLong())
+                                valueAnimator = ObjectAnimator.ofFloat(distance, resources.getDimension(R.dimen.refresh_footer_height)).setDuration(ANIME_TIME)
                                 valueAnimator?.addUpdateListener { animation ->
                                     val nowDistance = animation.animatedValue as Float
                                     val layoutParams = footerView?.layoutParams
@@ -108,21 +107,17 @@ class RefreshRecyclerView : SwipeRefreshLayout {
                                         footTv?.text = "加载中..."
                                         footProgress?.visibility = View.VISIBLE
 
-                                        val cur = System.currentTimeMillis()
-                                        if (listener != null && cur - lastRequestTime > REFRESH_INTERVAL) {
-                                            lastRequestTime = cur
+                                        if (listener != null) {
                                             loadingMore = true
-                                            listener?.onLoadMore()
+                                            loadMore()
                                         }
                                     }
                                 })
                                 valueAnimator?.start()
                             } else {
-                                val cur = System.currentTimeMillis()
-                                if (listener != null && cur - lastRequestTime > REFRESH_INTERVAL) {
-                                    lastRequestTime = cur
+                                if (listener != null) {
                                     loadingMore = true
-                                    listener?.onLoadMore()
+                                    loadMore()
                                 }
                             }
                         }
@@ -133,20 +128,26 @@ class RefreshRecyclerView : SwipeRefreshLayout {
         })
 
         setOnRefreshListener {
-            val cur = System.currentTimeMillis()
-            if (listener != null && !pulling && !loadingMore && cur - lastRequestTime > REFRESH_INTERVAL) {
+            if (listener != null && !pulling && !loadingMore) {
                 if (footerView != null) {
                     val layoutParams = footerView?.layoutParams
                     layoutParams?.height = 0
                     footerView?.layoutParams = layoutParams
                 }
                 touchEnd = false
-                lastRequestTime = cur
-                listener?.onRefresh()
+                refresh()
             } else {
                 isRefreshing = false
             }
         }
+    }
+
+    private fun loadMore() {
+        postDelayed({ listener?.onLoadMore() }, ANIME_TIME)
+    }
+
+    private fun refresh() {
+        postDelayed({ listener?.onRefresh() }, ANIME_TIME)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -157,8 +158,8 @@ class RefreshRecyclerView : SwipeRefreshLayout {
     private fun initFooter() {
         if (footerView == null && recyclerView?.adapter is RecyclerViewFooterAdapter<*>) {
             footerView = LayoutInflater.from(context).inflate(R.layout.layout_refresh_footer, null, false) as RelativeLayout
-            footTv = footerView?.findViewById(R.id.footerTv) as TextView
-            footProgress = footerView?.findViewById(R.id.footerProgress) as ProgressBar
+            footTv = footerView?.findViewById(R.id.footerTv)
+            footProgress = footerView?.findViewById(R.id.footerProgress)
             val params = RelativeLayout.LayoutParams(measuredWidth, 0)
             footerView?.layoutParams = params
             footTv?.text = "上拉加载更多"
@@ -171,7 +172,7 @@ class RefreshRecyclerView : SwipeRefreshLayout {
         if (footerView != null) {
             if (loadingMore) {
                 val start: Float = footerView?.layoutParams?.height?.toFloat() as Float
-                valueAnimator = ObjectAnimator.ofFloat(start, 0f).setDuration(500)
+                valueAnimator = ObjectAnimator.ofFloat(start, 0f).setDuration(ANIME_TIME)
                 valueAnimator?.addUpdateListener { animation ->
                     val nowDistance = animation.animatedValue as Float
                     val params = footerView?.layoutParams
@@ -206,7 +207,7 @@ class RefreshRecyclerView : SwipeRefreshLayout {
 
     fun setNoMoreData() {
         touchEnd = true
-        if (!(valueAnimator?.isRunning ?: true)) {
+        if (valueAnimator?.isRunning == false) {
             footerView?.layoutParams?.height = resources.getDimension(R.dimen.refresh_footer_height).toInt()
             footTv?.text = "我是有底线的"
             footProgress?.visibility = View.GONE
@@ -225,6 +226,6 @@ class RefreshRecyclerView : SwipeRefreshLayout {
 
     companion object {
         private val TAG = "RefreshRecyclerView"
-        private val REFRESH_INTERVAL = 1000
+        private val ANIME_TIME = 400L
     }
 }

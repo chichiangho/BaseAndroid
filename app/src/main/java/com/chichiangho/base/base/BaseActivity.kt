@@ -17,7 +17,8 @@ open class BaseActivity : AppCompatActivity() {
 
     protected fun showLoading(info: String) {
         loadingDialog.setMsg(info)
-        loadingDialog.show()
+        if (!isFinishing)
+            loadingDialog.show()
     }
 
     protected fun hideLoading() {

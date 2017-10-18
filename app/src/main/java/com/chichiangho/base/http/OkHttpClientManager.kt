@@ -28,17 +28,13 @@ object OkHttpClientManager {
             val certificateFactory = CertificateFactory.getInstance("X.509")
             val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
             keyStore.load(null)
-            var index = 0
-            for (certificate in certificates) {
-                val certificateAlias = Integer.toString(index++)
-
+            for ((index, certificate) in certificates.withIndex()) {
+                val certificateAlias = Integer.toString(index)
                 keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate))
-
                 try {
-                    certificate?.close()
+                    certificate.close()
                 } catch (e: IOException) {
                 }
-
             }
 
             val sslContext = SSLContext.getInstance("TLS")

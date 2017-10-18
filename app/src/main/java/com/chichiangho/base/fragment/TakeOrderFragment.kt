@@ -15,6 +15,7 @@ import com.chichiangho.base.R
 import com.chichiangho.base.activity.DailianDetailActivity
 import com.chichiangho.base.base.BaseFragment
 import com.chichiangho.base.bean.Data
+import com.chichiangho.base.extentions.logD
 import com.chichiangho.base.widgets.RecyclerViewFooterAdapter
 import com.chichiangho.base.widgets.RefreshRecyclerView
 import kotlinx.android.synthetic.main.fragment_take_order.*
@@ -37,6 +38,7 @@ class TakeOrderFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        logD("xx","yy")
         recycler.layoutManager = LinearLayoutManager(context)
         adapter = Adapter()
         recycler.adapter = adapter

@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import com.chichiangho.base.R
 import com.chichiangho.base.base.BaseTabActivity
+import com.chichiangho.base.extentions.logD
 import com.chichiangho.base.fragment.HomeFragment
 
 
@@ -30,6 +31,7 @@ class MainActivity : BaseTabActivity() {
 
     override fun onViewPagerSelected(arg0: Int) {
         super.onViewPagerSelected(arg0)
+        logD("", "selected $arg0")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

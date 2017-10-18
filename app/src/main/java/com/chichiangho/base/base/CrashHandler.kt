@@ -1,7 +1,8 @@
 package com.chichiangho.base.base
 
-import com.chichiangho.base.utils.DeviceUtil
-import com.chichiangho.base.utils.Logger
+import com.chichiangho.base.extentions.logE
+import com.chichiangho.base.extentions.logToFile
+import com.chichiangho.base.utils.Device
 import java.sql.Timestamp
 
 /**
@@ -18,16 +19,16 @@ class CrashHandler : Thread.UncaughtExceptionHandler {
      * 当UncaughtException发生时会回调该函数来处理
      */
     override fun uncaughtException(thread: Thread, ex: Throwable) {
-        val builder = StringBuilder("\nBrand: " + DeviceUtil.deviceName
-                + ", Model: " + DeviceUtil.deviceType + ", OS: " + "Android "
-                + DeviceUtil.osVersion + ", Version: " + DeviceUtil.appVersionName + "\n")
+        val builder = StringBuilder("\nBrand: " + Device.deviceName
+                + ", Model: " + Device.deviceType + ", OS: " + "Android "
+                + Device.osVersion + ", Version: " + Device.appVersionName + "\n")
         builder.append(ex.toString() + "\n")
         builder.append(ex.localizedMessage + "\n")
         val stack = ex.stackTrace
         for (element in stack) {
             builder.append(element.toString() + "\n")
         }
-        Logger.e("CrashHandler", "系统异常退出" + builder.toString())
+        logE("CrashHandler", "系统异常退出" + builder.toString())
         var throwable: Throwable? = ex.cause
         while (null != throwable) {
             val currentStack = throwable.stackTrace
@@ -36,7 +37,7 @@ class CrashHandler : Thread.UncaughtExceptionHandler {
             }
             throwable = throwable.cause
         }
-        Logger.logToFile(Timestamp(System.currentTimeMillis()).toString(), builder,
+        logToFile(Timestamp(System.currentTimeMillis()).toString(), builder,
                 "com_demo_crash.log")
 
 //        val log = builder.toString()

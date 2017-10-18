@@ -39,8 +39,10 @@ abstract class RecyclerViewFooterAdapter<T> : RecyclerView.Adapter<RecyclerView.
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (footerView != null && viewType == TYPE_FOOTER)
-            return Holder(footerView!!)
+        if (viewType == TYPE_FOOTER)
+            footerView?.let {
+                return object : RecyclerView.ViewHolder(footerView) {}
+            }
         return onCreate(parent, viewType)
     }
 
@@ -48,20 +50,17 @@ abstract class RecyclerViewFooterAdapter<T> : RecyclerView.Adapter<RecyclerView.
         if (getItemViewType(position) == TYPE_FOOTER) return
         val data = mDatas[position]
         onBind(viewHolder, position, data)
-        if (mListener != null) {
-            viewHolder.itemView.setOnClickListener { v -> mListener!!.onItemClick(v!!, data) }
-        }
+        viewHolder.itemView.setOnClickListener { v -> mListener?.onItemClick(v, data) }
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
         super.onAttachedToRecyclerView(recyclerView)
-        val manager = recyclerView!!.layoutManager
+        val manager = recyclerView?.layoutManager
         if (manager is GridLayoutManager) {
-            val gridManager = manager
-            gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return if (getItemViewType(position) == TYPE_FOOTER)
-                        gridManager.spanCount
+                        manager.spanCount
                     else
                         1
                 }
@@ -71,7 +70,7 @@ abstract class RecyclerViewFooterAdapter<T> : RecyclerView.Adapter<RecyclerView.
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder?) {
         super.onViewAttachedToWindow(holder)
-        val lp = holder!!.itemView.layoutParams
+        val lp = holder?.itemView?.layoutParams
         if (lp != null && lp is StaggeredGridLayoutManager.LayoutParams
                 && holder.layoutPosition == 0) {
             lp.isFullSpan = true
@@ -94,8 +93,6 @@ abstract class RecyclerViewFooterAdapter<T> : RecyclerView.Adapter<RecyclerView.
      * @param data
      */
     abstract fun onBind(holder: RecyclerView.ViewHolder, position: Int, data: T)
-
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     interface OnItemClickListener<in T> {
         fun onItemClick(v: View, data: T)

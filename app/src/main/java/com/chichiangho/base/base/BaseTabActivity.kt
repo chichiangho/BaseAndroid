@@ -16,7 +16,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.chichiangho.base.R
-import com.chichiangho.base.utils.DeviceUtil
+import com.chichiangho.base.utils.Device
 import kotlinx.android.synthetic.main.activity_tab.*
 import java.util.*
 
@@ -77,7 +77,8 @@ open class BaseTabActivity : BaseTitleActivity() {
         return this
     }
 
-    @JvmOverloads fun addTab(fragment: Fragment, tabTextRes: Int, imgNormal: Int = 0, imgSelected: Int = 0): BaseTabActivity {
+    @JvmOverloads
+    fun addTab(fragment: Fragment, tabTextRes: Int, imgNormal: Int = 0, imgSelected: Int = 0): BaseTabActivity {
         val holder = Holder(LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null), fragment, imgNormal, imgSelected)
         mList.add(holder)
         holder.tv.setText(tabTextRes)
@@ -107,7 +108,7 @@ open class BaseTabActivity : BaseTitleActivity() {
         for (i in mList.indices) {
             val tabItem = mList[i].view
 
-            val radioParams = RelativeLayout.LayoutParams(DeviceUtil.screenWidth / mList.size, resources.getDimension(mTabHeight).toInt())
+            val radioParams = RelativeLayout.LayoutParams(Device.screenWidth / mList.size, resources.getDimension(mTabHeight).toInt())
             tabItem.layoutParams = radioParams
 
             mTab.addView(tabItem)
@@ -121,7 +122,7 @@ open class BaseTabActivity : BaseTitleActivity() {
                 mTab.addView(divider)
             }
             if (mNeedUnderHint) {
-                val params = RelativeLayout.LayoutParams(DeviceUtil.screenWidth / mList.size / 2, resources.getDimension(R.dimen.tab_divider_height).toInt())
+                val params = RelativeLayout.LayoutParams(Device.screenWidth / mList.size / 2, resources.getDimension(R.dimen.tab_divider_height).toInt())
                 params.addRule(RelativeLayout.CENTER_HORIZONTAL)
                 params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
                 mList[i].under.layoutParams = params
@@ -138,18 +139,14 @@ open class BaseTabActivity : BaseTitleActivity() {
 
     private inner class MyAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
-        override fun getItem(arg0: Int): Fragment {
-            return mList[arg0].fragment
-        }
+        override fun getItem(arg0: Int): Fragment = mList[arg0].fragment
 
-        override fun getCount(): Int {
-            return mList.size
-        }
+        override fun getCount(): Int = mList.size
     }
 
     private inner class Holder internal constructor(val view: View, val fragment: Fragment, val imgNormal: Int, val imgSelected: Int) {
-        val tv: TextView = view.findViewById(R.id.text) as TextView
-        val iv: ImageView = view.findViewById(R.id.image) as ImageView
+        val tv: TextView = view.findViewById(R.id.text)
+        val iv: ImageView = view.findViewById(R.id.image)
         var under: View = view.findViewById(R.id.under_hint)
 
         init {

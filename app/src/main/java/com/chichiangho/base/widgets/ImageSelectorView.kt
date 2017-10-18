@@ -18,8 +18,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.chichiangho.base.R
-import com.chichiangho.base.utils.DeviceUtil
-import com.chichiangho.base.utils.ToastUtil
+import com.chichiangho.base.extentions.dpToPx
+import com.chichiangho.base.extentions.toastShort
 import java.util.*
 
 /**
@@ -84,7 +84,7 @@ class ImageSelectorView : RecyclerView {
     fun setData(position: Int, uri: Uri) {
         val path = getRealFilePath(uri)
         if (path == null) {
-            ToastUtil.showShort("第" + (position + 1) + "张图片不存在，请选择其他图片")
+            toastShort("第" + (position + 1) + "张图片不存在，请选择其他图片")
             return
         }
         if (position == ImagePaths.size - 1 && position < maxCount - 1)
@@ -129,7 +129,7 @@ class ImageSelectorView : RecyclerView {
                 width = measuredWidth
             val params = ViewGroup.LayoutParams(width / columns, width / columns)
             iv.layoutParams = params
-            val padding = DeviceUtil.dpToPx(resources, 5)
+            val padding = dpToPx(5)
             iv.setPadding(padding, padding, padding, padding)
             return Holder(iv)
         }
@@ -141,9 +141,7 @@ class ImageSelectorView : RecyclerView {
             }
         }
 
-        override fun getItemCount(): Int {
-            return ImagePaths.size
-        }
+        override fun getItemCount(): Int = ImagePaths.size
     }
 
     private inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {

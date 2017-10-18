@@ -21,7 +21,8 @@ open class BaseFragment : Fragment() {
 
     protected fun showLoading(info: String) {
         loadingDialog.setMsg(info)
-        loadingDialog.show()
+        if (activity?.isFinishing == false)
+            loadingDialog.show()
     }
 
     protected fun hideLoading() {

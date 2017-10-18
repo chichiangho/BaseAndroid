@@ -1,10 +1,10 @@
 package com.chichiangho.base.http
 
 import com.chichiangho.base.base.BaseResponse
-import com.chichiangho.base.utils.ToastUtil
-
+import com.chichiangho.base.extentions.toastShort
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import java.net.SocketTimeoutException
 
 /**
  * Created by chichiangho on 2017/4/27.
@@ -19,17 +19,20 @@ abstract class RxHttpObserver<T> : Observer<T> {
     }
 
     override fun onError(e: Throwable) {
-        if (e.message != null) {
+        e.message?.let {
             when (e.message) {
-                BaseResponse.CODE_TOKEN_TIMEOUT -> ToastUtil.showShort("token过期请重新登录")
+                BaseResponse.CODE_TOKEN_TIMEOUT -> toastShort("token过期请重新登录")
                 else -> {
-                    if (e.message?.contains("Failed to connect") ?: false) {
-                        ToastUtil.showShort("网络异常")
+                    if (e.message?.contains("Failed to connect") == true) {
+                        toastShort("网络异常")
                     } else if (e.message != "") {
-                        ToastUtil.showShort(e.message as String)
+                        toastShort(e.message as String)
                     }
                 }
             }
+        } ?: let {
+            if (e is SocketTimeoutException)
+                toastShort("time out")
         }
 
         onFailed()

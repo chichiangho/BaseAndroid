@@ -2,8 +2,8 @@ package com.chichiangho.base.http
 
 
 import com.chichiangho.base.base.ProjectDefines
-import com.chichiangho.base.base.onNextComplete
-import com.chichiangho.base.utils.PreferenceUtil
+import com.chichiangho.base.extentions.onNextComplete
+import com.chichiangho.base.utils.Preference
 import com.chichiangho.base.utils.SignUtil
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
@@ -38,12 +38,11 @@ object RxHttpDataProvider {
         signParams.put("appKey", requestParam.appKey as String)
         signParams.put("timestamp", requestParam.timestamp?.toString() ?: "")
 
-        val user = PreferenceUtil.getUser()
-        if (user != null) {
-            requestParam.token = user.userToken
+        if (Preference.loginUser != null) {
+            requestParam.token = Preference.loginUser?.userToken
             signParams.put("token", requestParam.token as String)
 
-            requestParam.userId = user.userId
+            requestParam.userId = Preference.loginUser?.userId
             signParams.put("userId", requestParam.userId?.toString() ?: "")
         }
 

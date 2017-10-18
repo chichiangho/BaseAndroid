@@ -508,7 +508,8 @@ class OptimizedNumberPicker : View {
      * *
      * @param needRespond need Respond to the ValueChange callback When Scrolling, default is false
      */
-    @JvmOverloads fun smoothScrollToValue(fromValue: Int, toValue: Int, needRespond: Boolean = true) {
+    @JvmOverloads
+    fun smoothScrollToValue(fromValue: Int, toValue: Int, needRespond: Boolean = true) {
         var fromValue = fromValue
         var toValue = toValue
         var deltaIndex: Int
@@ -736,7 +737,8 @@ class OptimizedNumberPicker : View {
             }
         }
 
-    @JvmOverloads fun setMinAndMaxShowIndex(minShowIndex: Int, maxShowIndex: Int, needRefresh: Boolean = true) {
+    @JvmOverloads
+    fun setMinAndMaxShowIndex(minShowIndex: Int, maxShowIndex: Int, needRefresh: Boolean = true) {
         if (minShowIndex > maxShowIndex) {
             throw IllegalArgumentException("minShowIndex should be less than maxShowIndex, minShowIndex is "
                     + minShowIndex + ", maxShowIndex is " + maxShowIndex + ".")
@@ -890,14 +892,12 @@ class OptimizedNumberPicker : View {
     private var currY = 0f
 
     private fun limitY(currDrawGlobalYPreferred: Int): Int {
-        var currDrawGlobalYPreferred = currDrawGlobalYPreferred
         if (mWrapSelectorWheel && mWrapSelectorWheelCheck) return currDrawGlobalYPreferred
-        if (currDrawGlobalYPreferred < mNotWrapLimitYBottom) {
-            currDrawGlobalYPreferred = mNotWrapLimitYBottom
-        } else if (currDrawGlobalYPreferred > mNotWrapLimitYTop) {
-            currDrawGlobalYPreferred = mNotWrapLimitYTop
+        return when {
+            currDrawGlobalYPreferred < mNotWrapLimitYBottom -> mNotWrapLimitYBottom
+            currDrawGlobalYPreferred > mNotWrapLimitYTop -> mNotWrapLimitYTop
+            else -> currDrawGlobalYPreferred
         }
-        return currDrawGlobalYPreferred
     }
 
     private var mFlagMayPress = false
@@ -960,7 +960,7 @@ class OptimizedNumberPicker : View {
 
     private fun click(event: MotionEvent) {
         val y = event.y
-        for (i in 0..mShowCount - 1) {
+        for (i in 0 until mShowCount) {
             if (mItemHeight * i <= y && y < mItemHeight * (i + 1)) {
                 clickItem(i)
                 break
@@ -1033,9 +1033,9 @@ class OptimizedNumberPicker : View {
             } else {
                 mInScrollingPickedNewValue = mCurrDrawFirstItemIndex + mShowCount / 2
             }
-            mInScrollingPickedNewValue = mInScrollingPickedNewValue % oneRecycleSize
+            mInScrollingPickedNewValue %= oneRecycleSize
             if (mInScrollingPickedNewValue < 0) {
-                mInScrollingPickedNewValue = mInScrollingPickedNewValue + oneRecycleSize
+                mInScrollingPickedNewValue += oneRecycleSize
             }
             if (mInScrollingPickedOldValue != mInScrollingPickedNewValue) {
                 respondPickedValueChangedInScrolling(mInScrollingPickedNewValue, mInScrollingPickedOldValue)
@@ -1047,6 +1047,7 @@ class OptimizedNumberPicker : View {
     private fun releaseVelocityTracker() {
         mVelocityTracker?.clear()
         mVelocityTracker?.recycle()
+        mVelocityTracker = null
     }
 
     private fun updateMaxWHOfDisplayedValues(needRequestLayout: Boolean) {

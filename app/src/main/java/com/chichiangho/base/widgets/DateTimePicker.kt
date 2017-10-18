@@ -7,7 +7,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import com.chichiangho.base.R
-import com.chichiangho.base.utils.TimeUtil
+import com.chichiangho.base.extentions.format
 import kotlinx.android.synthetic.main.layout_date_picker.*
 import java.util.*
 
@@ -88,11 +88,11 @@ class DateTimePicker : Dialog {
         calendar.time = curDate
 
         if (type and TYPE_DATE > 0 && type and TYPE_TIME > 0) {
-            resultTv.text = TimeUtil.formatTimeAccurateMin(curDate)
+            resultTv.text = curDate.format("yyyy-MM-dd HH:mm")
         } else if (type and TYPE_DATE > 0) {
-            resultTv.text = TimeUtil.formatTimeAccurateDay(curDate)
+            resultTv.text = curDate.format("yyyy-MM-dd")
         } else if (type and TYPE_TIME > 0) {
-            resultTv.text = TimeUtil.formatHourMinute(curDate)
+            resultTv.text = curDate.format("HH:mm")
         }
 
         if (type and TYPE_DATE > 0) {
@@ -312,13 +312,13 @@ class DateTimePicker : Dialog {
     private fun updateCurdate() {
         if (type and TYPE_DATE > 0 && type and TYPE_TIME > 0) {
             curDate = Date(yearPicker.value - 1900, monthPicker.value - 1, dayPicker.value, hourPicker.value, minutePicker.value)
-            resultTv.text = TimeUtil.formatTimeAccurateMin(curDate)
+            resultTv.text = curDate.format("yyyy-MM-dd HH:mm")
         } else if (type and TYPE_DATE > 0) {
             curDate = Date(yearPicker.value - 1900, monthPicker.value - 1, dayPicker.value, 0, 0)
-            resultTv.text = TimeUtil.formatTimeAccurateDay(curDate)
+            resultTv.text = curDate.format("yyyy-MM-dd")
         } else if (type and TYPE_TIME > 0) {
             curDate = Date(0, 0, 0, hourPicker.value, minutePicker.value)
-            resultTv.text = TimeUtil.formatHourMinute(curDate.time)
+            resultTv.text = curDate.format("HH:mm")
         }
     }
 

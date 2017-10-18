@@ -3,10 +3,8 @@ package com.chichiangho.base.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-
 import com.chichiangho.base.base.CrashHandler
-import com.chichiangho.base.utils.DeviceUtil
-import com.chichiangho.base.utils.PreferenceUtil
+import com.chichiangho.base.utils.Preference
 
 /**
  * Created by chichiangho on 2017/5/18.
@@ -18,7 +16,7 @@ class SplashActivity : Activity() {
 
         doInitThings()
 
-        if (PreferenceUtil.getUser() != null) {
+        if (Preference.loginUser != null) {
             startActivity(Intent(this, DailianActivity::class.java))
         } else {
             startActivity(Intent(this, DailianActivity::class.java))
@@ -28,7 +26,6 @@ class SplashActivity : Activity() {
 
     private fun doInitThings() {
         CrashHandler().init()
-        DeviceUtil.init(this)
         //        OkHttpClientManager.setCertificates(getAssets().open("证书"));
     }
 }
