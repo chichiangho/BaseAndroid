@@ -38,18 +38,16 @@ object CityDBManager {
     private val BUFFER_SIZE = 1024
 
 
-    val dbPath: String
-        get() {
-            return File.separator + "data"+Environment.getDataDirectory().absolutePath + File.separator+BaseApplication.appContext.packageName + File.separator + "databases" + File.separator
-        }
+    private val dbPath: String
+        get() =
+            File.separator + "data"+Environment.getDataDirectory().absolutePath + File.separator+BaseApplication.appContext.packageName + File.separator + "databases" + File.separator
 
     fun copyDBFile() {
-        val DB_PATH = dbPath
-        val dir = File(DB_PATH)
+        val dir = File(dbPath)
         if (!dir.exists()) {
             dir.mkdirs()
         }
-        val dbFile = File(DB_PATH + DB_NAME)
+        val dbFile = File(dbPath + DB_NAME)
         if (!dbFile.exists()) {
             val `is`: InputStream
             val os: OutputStream

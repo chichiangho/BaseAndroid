@@ -12,14 +12,10 @@ import java.io.IOException
 class ProgressRequestBody(private val requestBody: RequestBody, private val progressListener: OkHttpClient.ProgressListener?) : RequestBody() {
     private var bufferedSink: BufferedSink? = null
 
-    override fun contentType(): MediaType {
-        return requestBody.contentType()
-    }
+    override fun contentType(): MediaType? = requestBody.contentType()
 
     @Throws(IOException::class)
-    override fun contentLength(): Long {
-        return requestBody.contentLength()
-    }
+    override fun contentLength(): Long = requestBody.contentLength()
 
     @Throws(IOException::class)
     override fun writeTo(sink: BufferedSink) {

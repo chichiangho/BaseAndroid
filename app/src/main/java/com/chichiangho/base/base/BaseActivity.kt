@@ -6,7 +6,7 @@ import com.chichiangho.base.widgets.LoadingDialog
 import io.reactivex.disposables.Disposable
 import java.util.*
 
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
     private lateinit var loadingDialog: LoadingDialog
     protected var disposables = ArrayList<Disposable>()
 

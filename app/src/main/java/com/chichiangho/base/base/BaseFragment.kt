@@ -10,7 +10,7 @@ import java.util.*
  * Created by chichiangho on 2017/6/6.
  */
 
-open class BaseFragment : Fragment() {
+abstract class BaseFragment : Fragment() {
     private lateinit var loadingDialog: LoadingDialog
     protected var disposables = ArrayList<Disposable>()
 

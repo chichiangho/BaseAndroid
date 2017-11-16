@@ -57,7 +57,7 @@ class MakeOrderFragment : BaseFragment() {
         perform.setOnClickListener {
             Observable
                     .create(ObservableOnSubscribe<String> { e ->
-                        val res = OkHttpClient["http://wxpay.wxutil.com/pub_v2/app/app_pay.php"].body().string()
+                        val res = OkHttpClient["http://wxpay.wxutil.com/pub_v2/app/app_pay.php"].body()?.string()
                         e.onNextComplete(res)
                     })
                     .io_main()

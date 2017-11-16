@@ -20,7 +20,7 @@ import com.chichiangho.base.utils.Device
 import kotlinx.android.synthetic.main.activity_tab.*
 import java.util.*
 
-open class BaseTabActivity : BaseTitleActivity() {
+abstract class BaseTabActivity : BaseTitleActivity() {
 
     private lateinit var mAdapter: MyAdapter
     private lateinit var mTab: LinearLayout

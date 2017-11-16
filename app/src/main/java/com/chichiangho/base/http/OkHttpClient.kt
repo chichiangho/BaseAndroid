@@ -57,7 +57,11 @@ object OkHttpClient {
             return if (response.isSuccessful) {
                 val result = response.body()!!.string()
                 logJson(TAG, url + JSON_SPLIT + result)
-                result.toObj(clz)
+                result.toObj(clz) ?: let {
+                    val res = clz.newInstance()
+                    (res as BaseResponse).msg = "接口返回非正常的response"
+                    res
+                }
             } else {
                 logD(TAG, "error " + response.code() + ":" + response.message())
                 val res = clz.newInstance()
@@ -93,8 +97,8 @@ object OkHttpClient {
                 val buf = ByteArray(2048)
                 var len: Int
                 try {
-                    `is` = response.body().byteStream()
-                    val total = response.body().contentLength()
+                    `is` = response.body()?.byteStream()
+                    val total = response.body()?.contentLength()?:1
                     val file = File(path)
                     if (!file.exists())
                         file.createNewFile()

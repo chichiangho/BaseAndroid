@@ -8,7 +8,7 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.layout_title.*
 
-open class BaseTitleActivity : BaseActivity() {
+abstract class BaseTitleActivity : BaseActivity() {
 
     override fun setContentView(@LayoutRes layoutResID: Int) {
         super.setContentView(layoutResID)
@@ -47,7 +47,7 @@ open class BaseTitleActivity : BaseActivity() {
 
     private var statusHeight: Int = 0
 
-    val statusBarHeight: Int
+    private val statusBarHeight: Int
         get() {
             if (statusHeight == 0) {
                 try {

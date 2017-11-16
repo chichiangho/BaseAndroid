@@ -37,7 +37,7 @@ class MainActivity : BaseTabActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         //确保要请求的权限已在manifest声明，否则返回数组中该权限将为PackageManager.PERMISSION_DENIED
-        if (requestCode == 12345 && !(grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+        if (requestCode == 12345 && !(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
             AlertDialog.Builder(this).setCancelable(false).setMessage("很抱歉，APP正常运行需要您授予相关权限")
                     .setPositiveButton("关闭") { _, _ -> finish() }
                     .create().show()
