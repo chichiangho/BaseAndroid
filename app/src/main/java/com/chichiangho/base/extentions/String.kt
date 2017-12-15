@@ -22,6 +22,8 @@ fun String.isCellPhone(): Boolean = Pattern.compile("1[34578]\\d{9}").matcher(th
 
 fun Any.toJson(): String = gson.toJson(this)
 
+fun String.durationTo(end: String) = String.format("%1s - %2s", this, end)
+
 @Throws(JsonSyntaxException::class)
 fun <T> String.toObj(clazz: Class<T>): T = gson.fromJson(this, clazz)
 

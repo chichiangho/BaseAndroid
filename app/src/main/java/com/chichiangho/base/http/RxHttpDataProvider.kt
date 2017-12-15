@@ -1,8 +1,7 @@
 package com.chichiangho.base.http
 
 
-import com.chichiangho.base.base.ProjectDefines
-import com.chichiangho.base.extentions.onNextComplete
+import com.chichiangho.base.base.AppConfigs
 import com.chichiangho.base.utils.Preference
 import com.chichiangho.base.utils.SignUtil
 import io.reactivex.Observable
@@ -15,9 +14,7 @@ import java.util.*
 
 object RxHttpDataProvider {
 
-    private fun getUrl(method: String): String {
-        return ProjectDefines.HTTP_BASE + ProjectDefines.URL_BASE + method
-    }
+    private fun getUrl(method: String): String = AppConfigs.HTTP_BASE + AppConfigs.URL_BASE + method
 
     /**
      * 构建请求参数
@@ -30,7 +27,7 @@ object RxHttpDataProvider {
      */
     private fun getRequestParam(bizParams: BizParam, subSignParams: HashMap<String, String>): RequestParam {
         val requestParam = RequestParam()
-        requestParam.appKey = ProjectDefines.APP_KEY
+        requestParam.appKey = AppConfigs.APP_KEY
         requestParam.timestamp = System.currentTimeMillis()
 
 
@@ -48,7 +45,7 @@ object RxHttpDataProvider {
 
         if (!subSignParams.isEmpty())
             signParams.putAll(subSignParams)
-        requestParam.sign = SignUtil.getSign(signParams, ProjectDefines.APP_SECRET)
+        requestParam.sign = SignUtil.getSign(signParams, AppConfigs.APP_SECRET)
 
         requestParam.params = bizParams
 

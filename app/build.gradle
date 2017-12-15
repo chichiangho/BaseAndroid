@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 25
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.chichiangho.base"
         minSdkVersion 17
-        targetSdkVersion 26
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,16 +28,15 @@ dependencies {
     })
 
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support:recyclerview-v7:25.4.0'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.2'
-//    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'//微信支付等
+//    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'//微信支付等
 }
 repositories {
     mavenCentral()

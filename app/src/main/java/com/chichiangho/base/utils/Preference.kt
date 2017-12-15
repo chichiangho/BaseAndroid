@@ -2,31 +2,30 @@ package com.chichiangho.base.utils
 
 import android.content.Context
 import com.chichiangho.base.base.BaseApplication
-import com.chichiangho.base.base.ProjectDefines
+import com.chichiangho.base.base.AppConfigs
 import com.chichiangho.base.bean.User
 import com.chichiangho.base.extentions.toJson
 import com.chichiangho.base.extentions.toObj
 
 object Preference {
     var loginUser: User? = null
-        get() = field ?: (get(ProjectDefines.PREFERENCE_KEY_USER_INFO, "") as String).toObj(User::class.java)
+        get() = field ?: (get(AppConfigs.PREFERENCE_KEY_USER_INFO, "") as String).toObj(User::class.java)
         set(value) {
             field = value
-            set(ProjectDefines.PREFERENCE_KEY_USER_INFO, value?.toJson() ?: "")
+            set(AppConfigs.PREFERENCE_KEY_USER_INFO, value?.toJson() ?: "")
         }
 
-    private fun set(key: String, data: Any, asynchronous: Boolean = true) {
-        val type = data.javaClass.simpleName
+    private fun set(key: String, defValue: Any, asynchronous: Boolean = true) {
         val sharedPreferences = BaseApplication.appContext
-                .getSharedPreferences(ProjectDefines.PREFERENCE_NAME, Context.MODE_PRIVATE)
+                .getSharedPreferences(AppConfigs.PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
-        when (type) {
-            "Integer" -> editor.putInt(key, data as Int)
-            "Boolean" -> editor.putBoolean(key, data as Boolean)
-            "String" -> editor.putString(key, data as String)
-            "Float" -> editor.putFloat(key, data as Float)
-            "Long" -> editor.putLong(key, data as Long)
+        when (defValue.javaClass.simpleName) {
+            "Integer" -> editor.putInt(key, defValue as Int)
+            "Boolean" -> editor.putBoolean(key, defValue as Boolean)
+            "String" -> editor.putString(key, defValue as String)
+            "Float" -> editor.putFloat(key, defValue as Float)
+            "Long" -> editor.putLong(key, defValue as Long)
         }
 
         if (asynchronous)
@@ -36,10 +35,9 @@ object Preference {
     }
 
     private fun get(key: String, defValue: Any): Any {
-        val type = defValue.javaClass.simpleName
-        val sharedPreferences = BaseApplication.appContext.getSharedPreferences(ProjectDefines.PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences = BaseApplication.appContext.getSharedPreferences(AppConfigs.PREFERENCE_NAME, Context.MODE_PRIVATE)
 
-        return when (type) {
+        return when (defValue.javaClass.simpleName) {
             "Integer" -> sharedPreferences.getInt(key, defValue as Int)
             "Boolean" -> sharedPreferences.getBoolean(key, defValue as Boolean)
             "String" -> sharedPreferences.getString(key, defValue as String)

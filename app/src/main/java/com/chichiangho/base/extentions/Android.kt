@@ -9,12 +9,14 @@ import com.chichiangho.base.base.BaseApplication
 val appCtx: Context
     get() = BaseApplication.appContext
 
-fun toastShort(string: String) {
+fun toastShort(string: String?) {
+    if (string == null) return
     if (Looper.getMainLooper() === Looper.myLooper())
         Toast.makeText(appCtx, string, Toast.LENGTH_SHORT).show()
 }
 
-fun toastLong(string: String) {
+fun toastLong(string: String?) {
+    if (string == null) return
     if (Looper.getMainLooper() === Looper.myLooper())
         Toast.makeText(appCtx, string, Toast.LENGTH_LONG).show()
 }

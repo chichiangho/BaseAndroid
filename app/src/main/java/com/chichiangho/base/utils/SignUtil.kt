@@ -40,7 +40,7 @@ object SignUtil {
     private fun byte2hex(bytes: ByteArray): String {
         val sign = StringBuilder()
         for (i in bytes.indices) {
-            val hex = Integer.toHexString(bytes[i].and(0xFF as Byte) as Int)
+            val hex = Integer.toHexString(bytes[i].toInt() and 0x11)
             if (hex.length == 1) {
                 sign.append("0")
             }

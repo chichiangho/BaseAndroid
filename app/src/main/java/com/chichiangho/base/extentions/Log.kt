@@ -2,6 +2,7 @@ package com.chichiangho.base.extentions
 
 import android.os.Environment
 import android.util.Log
+import com.chichiangho.base.base.AppConfigs
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -13,126 +14,93 @@ import java.io.IOException
 /**
  * Created by chichiangho on 2017/10/18.
  */
-val log = Logger()
+
+val log = if (AppConfigs.BUILD_TYPE == AppConfigs.TYPE_DEBUGE) Logger() else null
 
 fun logV(tag: String, msg: String) {
-    log.v(tag, msg)
+    log?.v(tag, msg)
 }
 
 fun logD(tag: String, msg: String) {
-    log.d(tag, msg)
+    log?.d(tag, msg)
 }
 
 fun logI(tag: String, msg: String) {
-    log.i(tag, msg)
+    log?.i(tag, msg)
 }
 
 fun logW(tag: String, msg: String) {
-    log.w(tag, msg)
+    log?.w(tag, msg)
 }
 
 fun logE(tag: String, msg: String) {
-    log.e(tag, msg)
+    log?.e(tag, msg)
 }
 
 fun logJson(tag: String, msg: String) {
-    log.json(tag, msg)
+    log?.json(tag, msg)
 }
 
 fun logToFile(time: String, msg: Any?, fileName: String) {
-    log.logToFile(time, msg, fileName)
+    log?.logToFile(time, msg, fileName)
 }
 
 class Logger {
     companion object {
         val JSON_SPLIT = "( ゜- ゜)つロ"
+        private val SINGLE_DIVIDER = "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈"
+        val TOP_BORDER = '┌' + SINGLE_DIVIDER + SINGLE_DIVIDER
+        val BOTTOM_BORDER = '└' + SINGLE_DIVIDER + SINGLE_DIVIDER
+        val MIDDLE_BORDER = '├' + SINGLE_DIVIDER + SINGLE_DIVIDER
+        val JSON_INDENT = 2
+        val MAX_STACK_LINE_COUNT = 5// 打印调用栈的行數,MAX_STACK_LINE_COUNT行
     }
-
-    private val ENABLE_LOG_TO_FILE: Boolean = true
-    var logLevel = LogLevel.DEBUG // 日志的等级，可以进行配置，最好在Application中进行全局的配置
-
-    enum class LogLevel {
-        ERROR {
-            override val value: Int get() = 0
-        },
-        WARN {
-            override val value: Int get() = 1
-        },
-        INFO {
-            override val value: Int get() = 2
-        },
-        DEBUG {
-            override val value: Int get() = 3
-        };
-
-        abstract val value: Int
-    }
-
-    private val MIN_STACK_OFFSET = 3
-    private val TOP_LEFT_CORNER = '┌'
-    private val BOTTOM_LEFT_CORNER = '└'
-    private val MIDDLE_CORNER = '├'
-    private val SINGLE_DIVIDER = "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈"
-    val TOP_BORDER = TOP_LEFT_CORNER + SINGLE_DIVIDER + SINGLE_DIVIDER
-    val BOTTOM_BORDER = BOTTOM_LEFT_CORNER + SINGLE_DIVIDER + SINGLE_DIVIDER
-    val MIDDLE_BORDER = MIDDLE_CORNER + SINGLE_DIVIDER + SINGLE_DIVIDER
-    val JSON_INDENT = 2
 
     internal fun e(TAG: String, msg: String) {
-        if (LogLevel.ERROR.value <= logLevel.value) {
-            if (msg.isNotBlank()) {
-                val s = getMethodNames()
-                Log.e(TAG, String.format(s, msg))
-            }
+        if (msg.isNotBlank()) {
+            val s = getMethodNames()
+            Log.e(TAG, String.format(s, msg))
         }
     }
 
     fun w(TAG: String, msg: String) {
-        if (LogLevel.WARN.value <= logLevel.value) {
-            if (msg.isNotBlank()) {
-                val s = getMethodNames()
-                Log.w(TAG, String.format(s, msg))
-            }
+        if (msg.isNotBlank()) {
+            val s = getMethodNames()
+            Log.w(TAG, String.format(s, msg))
         }
     }
 
     fun i(TAG: String, msg: String) {
-        if (LogLevel.INFO.value <= logLevel.value) {
-            if (msg.isNotBlank()) {
-                val s = getMethodNames()
-                Log.i(TAG, String.format(s, msg))
-            }
+        if (msg.isNotBlank()) {
+            val s = getMethodNames()
+            Log.i(TAG, String.format(s, msg))
         }
     }
 
     fun d(TAG: String, msg: String) {
-        if (LogLevel.DEBUG.value <= logLevel.value) {
-            if (msg.isNotBlank()) {
-                val s = getMethodNames()
-                Log.d(TAG, String.format(s, msg))
-            }
+        if (msg.isNotBlank()) {
+            val s = getMethodNames()
+            Log.d(TAG, String.format(s, msg))
         }
     }
 
     fun v(TAG: String, msg: String) {
-        if (LogLevel.DEBUG.value <= logLevel.value) {
-            if (msg.isNotBlank()) {
-                val s = getMethodNames()
-                Log.v(TAG, String.format(s, msg))
-            }
+        if (msg.isNotBlank()) {
+            val s = getMethodNames()
+            Log.v(TAG, String.format(s, msg))
         }
     }
 
-    fun json(TAG: String, json: String) {
-        var json = json
-        if (json.isBlank()) {
+    fun json(TAG: String, jsonStr: String) {
+        if (jsonStr.isBlank()) {
             d(TAG, "Empty/Null json content")
             return
         }
 
         try {
-            val jsonSplit = json.split(JSON_SPLIT).toTypedArray()
+            val jsonSplit = jsonStr.split(JSON_SPLIT).toTypedArray()
             var pre = ""
+            var json: String
             if (jsonSplit.size < 2) {
                 json = jsonSplit[0]
             } else {
@@ -140,36 +108,57 @@ class Logger {
                 json = jsonSplit[1]
             }
 
-            if (json.startsWith("{")) {
-                val jsonObject = JSONObject(json)
-                json = (if (pre.isEmpty()) "" else pre + "\n") + jsonObject.toString(JSON_INDENT)
-                json = json.replace("${'\\'}", "").replace("\n".toRegex(), "\n┊ ")
-                d(TAG, json)
-                return
+            when {
+                json.startsWith("{") -> {
+                    val jsonObject = JSONObject(json)
+                    json = (if (pre.isEmpty()) "" else pre + "\n") + jsonObject.toString(JSON_INDENT)
+                    formatLogJson(TAG, json)
+                }
+                json.startsWith("[") -> {
+                    val jsonArray = JSONArray(json)
+                    json = (if (pre.isEmpty()) "" else pre + "\n") + jsonArray.toString(JSON_INDENT)
+                    formatLogJson(TAG, json)
+                }
+                else -> e(TAG, "Invalid Json")
             }
-            if (json.startsWith("[")) {
-                val jsonArray = JSONArray(json)
-                json = (if (pre.isEmpty()) "" else pre + "\n") + jsonArray.toString(JSON_INDENT)
-                json = json.replace("${'\\'}", "").replace("\n".toRegex(), "\n┊ ")
-                d(TAG, json)
-                return
-            }
-            e(TAG, "Invalid Json")
         } catch (e: JSONException) {
             e(TAG, "Invalid Json")
         }
+    }
+
+    private fun formatLogJson(TAG: String, jsons: String) {
+        val json = jsons.replace("${'\\'}", "").replace("\n".toRegex(), "\n┊ ")
+        val lineLength = 2560
+        var start = 0
+        var end: Int
+        for (i in 0..99) {
+            if (start >= json.length)
+                break
+
+            val s = if (start + lineLength >= json.length) ""
+            else json.substring(start + lineLength, if (start + lineLength + lineLength > json.length) json.length else start + lineLength + lineLength)
+
+            end = start + lineLength + s.indexOfFirst { it -> it == '\n' }
+
+            if (end >= json.length)
+                end = json.length
+            if (i == 0)
+                Log.d(TAG, String.format(getMethodNames(false), json.substring(start, end)))
+            else
+                Log.d(TAG, json.substring(start, end))
+            start = end
+        }
+        Log.d(TAG, BOTTOM_BORDER)
     }
 
     fun logToFile(time: String, msg: Any?, fileName: String) {
         if (null == msg) {
             return
         }
-        if (ENABLE_LOG_TO_FILE) {
-            writeToSDCard(fileName, "[" + time + "] " + msg.toString() + "\n")
-        }
+        writeToSDCard(fileName, "[" + time + "] " + msg.toString() + "\n")
     }
 
-    private fun getMethodNames(): String {
+    private fun getMethodNames(withLastLine: Boolean = true): String {
         val sElements = Thread.currentThread().stackTrace
         var stackOffset = getStackOffset(sElements)
         stackOffset += 2 //Logger类和Log.kt2个方法占用了2个栈
@@ -180,28 +169,31 @@ class Logger {
                 .append("\r\n")
                 .append(MIDDLE_BORDER)
                 .append("\r\n") // 添加类名、方法名、行数
-                .append("┊ ")
-                .append(sElements[stackOffset].className)
-                .append(".")
-                .append(sElements[stackOffset].methodName)
-                .append(" ")
-                .append(" (")
-                .append(sElements[stackOffset].fileName)
-                .append(":").append(sElements[stackOffset].lineNumber)
-                .append(")")
-                .append("\r\n")
-                .append(MIDDLE_BORDER)
+        for (i in 0..if (sElements.size - stackOffset > MAX_STACK_LINE_COUNT - 1) MAX_STACK_LINE_COUNT - 1 else sElements.size - stackOffset) {
+            builder.append("┊ ")
+                    .append(sElements[stackOffset + i].className)
+                    .append(".")
+                    .append(sElements[stackOffset + i].methodName)
+                    .append(" ")
+                    .append(" (")
+                    .append(sElements[stackOffset + i].fileName)
+                    .append(":").append(sElements[stackOffset + i].lineNumber)
+                    .append(")")
+                    .append("\r\n")
+        }
+        builder.append(MIDDLE_BORDER)
                 .append("\r\n") // 添加打印的日志信息
                 .append("┊ ")
                 .append("%s")
                 .append("\r\n")
-                .append(BOTTOM_BORDER)
-                .append("\r\n")
+        if (withLastLine)
+            builder.append(BOTTOM_BORDER)
+                    .append("\r\n")
         return builder.toString()
     }
 
     private fun getStackOffset(trace: Array<StackTraceElement>): Int {
-        var i = MIN_STACK_OFFSET
+        var i = 3
         while (i < trace.size) {
             val e = trace[i]
             val name = e.className
@@ -224,21 +216,16 @@ class Logger {
             } catch (e: Exception) {
 
             } finally {
-                if (fileOutputStream != null) {
-                    try {
-                        fileOutputStream.close()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
-
+                try {
+                    fileOutputStream?.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
                 }
-                if (fileInputStream != null) {
-                    try {
-                        fileInputStream.close()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
 
+                try {
+                    fileInputStream?.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
                 }
             }
         }
