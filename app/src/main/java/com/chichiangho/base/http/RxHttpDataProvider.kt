@@ -2,6 +2,7 @@ package com.chichiangho.base.http
 
 
 import com.chichiangho.base.base.AppConfigs
+import com.chichiangho.base.extentions.onNextComplete
 import com.chichiangho.base.utils.Preference
 import com.chichiangho.base.utils.SignUtil
 import io.reactivex.Observable

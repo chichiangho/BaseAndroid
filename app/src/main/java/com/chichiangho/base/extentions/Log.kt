@@ -15,7 +15,7 @@ import java.io.IOException
  * Created by chichiangho on 2017/10/18.
  */
 
-val log = if (AppConfigs.BUILD_TYPE == AppConfigs.TYPE_DEBUGE) Logger() else null
+val log = if (!AppConfigs.TYPE_RELEASE) Logger() else null
 
 fun logV(tag: String, msg: String) {
     log?.v(tag, msg)

@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "26.0.2"
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.chichiangho.base"
         minSdkVersion 17
@@ -36,7 +36,7 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-//    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'//微信支付等
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'//微信支付等
 }
 repositories {
     mavenCentral()

@@ -1,10 +1,7 @@
 package com.chichiangho.base.base
 
 object AppConfigs {
-    val TYPE_RELEASE = 0
-    val TYPE_DEBUGE = 1
-
-    val BUILD_TYPE = TYPE_DEBUGE
+    val TYPE_RELEASE = false
 
     val HTTP_BASE = ""
     val URL_BASE = ""

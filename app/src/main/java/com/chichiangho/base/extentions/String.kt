@@ -73,7 +73,7 @@ class IntegerAdapter : TypeAdapter<Int>() {
     override fun read(reader: JsonReader): Int? {
         if (reader.peek() == JsonToken.NULL) {
             reader.nextNull()
-            return 0
+            return -1314//某些接口0可能有特殊含义
         }
         return reader.nextInt()
     }
@@ -93,7 +93,7 @@ class LongAdapter : TypeAdapter<Long>() {
     override fun read(reader: JsonReader): Long? {
         if (reader.peek() == JsonToken.NULL) {
             reader.nextNull()
-            return 0L
+            return -1314L
         }
         return reader.nextLong()
     }
@@ -113,7 +113,7 @@ class DoubleAdapter : TypeAdapter<Double>() {
     override fun read(reader: JsonReader): Double? {
         if (reader.peek() == JsonToken.NULL) {
             reader.nextNull()
-            return 0.0
+            return -1314.0
         }
         return reader.nextDouble()
     }
