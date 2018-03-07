@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.chichiangho.base.widgets.OptimizedNumberPicker
+        <com.chichiangho.widget_date_time_picker.OptimizedNumberPicker
             android:id="@+id/yearPicker"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             app:TextSizeNormal="@dimen/size_middle"
             app:TextSizeSelected="@dimen/size_middle" />
 
-        <com.chichiangho.base.widgets.OptimizedNumberPicker
+        <com.chichiangho.widget_date_time_picker.OptimizedNumberPicker
             android:id="@+id/monthPicker"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
             app:TextSizeNormal="@dimen/size_middle"
             app:TextSizeSelected="@dimen/size_middle" />
 
-        <com.chichiangho.base.widgets.OptimizedNumberPicker
+        <com.chichiangho.widget_date_time_picker.OptimizedNumberPicker
             android:id="@+id/dayPicker"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
             app:TextSizeNormal="@dimen/size_middle"
             app:TextSizeSelected="@dimen/size_middle" />
 
-        <com.chichiangho.base.widgets.OptimizedNumberPicker
+        <com.chichiangho.widget_date_time_picker.OptimizedNumberPicker
             android:id="@+id/hourPicker"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
             app:TextSizeNormal="@dimen/size_middle"
             app:TextSizeSelected="@dimen/size_middle" />
 
-        <com.chichiangho.base.widgets.OptimizedNumberPicker
+        <com.chichiangho.widget_date_time_picker.OptimizedNumberPicker
             android:id="@+id/minutePicker"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

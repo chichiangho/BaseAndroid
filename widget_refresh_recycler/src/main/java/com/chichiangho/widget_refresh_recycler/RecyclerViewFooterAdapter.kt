@@ -1,4 +1,4 @@
-package com.chichiangho.base.widgets
+package com.chichiangho.widget_refresh_recycler
 
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView

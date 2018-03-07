@@ -11,7 +11,7 @@ import com.chichiangho.base.http.RxHttpObserver
 import com.chichiangho.base.pay.AliPrePayInfo
 import com.chichiangho.base.pay.PayUtil
 import com.chichiangho.base.pay.PrePayInfo
-import com.chichiangho.base.widgets.DateTimePicker
+import com.chichiangho.widget_date_time_picker.DateTimePicker
 import com.chichiangho.base.widgets.ImageSelectorView
 import com.chichiangho.common.base.BaseFragment
 import com.chichiangho.common.extentions.*

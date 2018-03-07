@@ -1,4 +1,4 @@
-package com.chichiangho.base.widgets
+package com.chichiangho.widget_refresh_recycler
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -16,8 +16,6 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
-
-import com.chichiangho.base.R
 
 class RefreshRecyclerView : SwipeRefreshLayout {
     private var listener: RefreshListener? = null

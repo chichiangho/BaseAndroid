@@ -13,10 +13,10 @@ import android.widget.*
 import com.chichiangho.base.R
 import com.chichiangho.base.activity.DailianDetailActivity
 import com.chichiangho.base.bean.Data
-import com.chichiangho.base.widgets.RecyclerViewFooterAdapter
-import com.chichiangho.base.widgets.RefreshRecyclerView
 import com.chichiangho.common.base.BaseFragment
 import com.chichiangho.common.extentions.logD
+import com.chichiangho.widget_refresh_recycler.RecyclerViewFooterAdapter
+import com.chichiangho.widget_refresh_recycler.RefreshRecyclerView
 import kotlinx.android.synthetic.main.fragment_take_order.*
 import kotlinx.android.synthetic.main.item_dailian_trade.view.*
 import java.util.*

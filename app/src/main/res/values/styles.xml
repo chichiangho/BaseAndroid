@@ -49,31 +49,6 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="text_big_dark_grey">
-        <item name="android:textSize">@dimen/size_big</item>
-        <item name="android:textColor">@color/dark_grey</item>
-    </style>
-
-    <style name="text_middle_dark_grey">
-        <item name="android:textSize">@dimen/size_middle</item>
-        <item name="android:textColor">@color/dark_grey</item>
-    </style>
-
-    <style name="text_middle_light_grey">
-        <item name="android:textSize">@dimen/size_middle</item>
-        <item name="android:textColor">@color/light_grey</item>
-    </style>
-
-    <style name="text_small_dark_grey">
-        <item name="android:textSize">@dimen/size_small</item>
-        <item name="android:textColor">@color/dark_grey</item>
-    </style>
-
-    <style name="text_small_light_grey">
-        <item name="android:textSize">@dimen/size_small</item>
-        <item name="android:textColor">@color/light_grey</item>
-    </style>
-
     <style name="item_label_style" parent="text_middle_dark_grey">
         <item name="android:layout_height">@dimen/label_height</item>
         <item name="android:gravity">center_vertical</item>

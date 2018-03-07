@@ -1,1 +1,1 @@
-include ':app', ':common'
+include ':app', ':common', ':widget_refresh_recycler', ':widget_date_time_picker'

@@ -28,10 +28,11 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.9.1'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     //微信支付等
+    implementation project(':widget_refresh_recycler')
+    implementation project(':widget_date_time_picker')
     implementation project(':common')
 }
 repositories {
