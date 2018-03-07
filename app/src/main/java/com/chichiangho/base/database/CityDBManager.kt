@@ -17,8 +17,8 @@ package com.chichiangho.base.database
 
 import android.database.sqlite.SQLiteDatabase
 import android.os.Environment
-import com.chichiangho.base.base.BaseApplication
 import com.chichiangho.base.bean.CityArea
+import com.chichiangho.common.base.BaseApplication
 import java.io.*
 import java.util.*
 
@@ -40,7 +40,7 @@ object CityDBManager {
 
     private val dbPath: String
         get() =
-            File.separator + "data"+Environment.getDataDirectory().absolutePath + File.separator+BaseApplication.appContext.packageName + File.separator + "databases" + File.separator
+            File.separator + "data"+Environment.getDataDirectory().absolutePath + File.separator+ BaseApplication.appContext.packageName + File.separator + "databases" + File.separator
 
     fun copyDBFile() {
         val dir = File(dbPath)

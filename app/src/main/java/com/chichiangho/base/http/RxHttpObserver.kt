@@ -1,7 +1,7 @@
 package com.chichiangho.base.http
 
 import com.chichiangho.base.base.BaseResponse
-import com.chichiangho.base.extentions.toastShort
+import com.chichiangho.common.extentions.toastShort
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import java.net.SocketTimeoutException

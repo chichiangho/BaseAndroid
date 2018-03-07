@@ -7,7 +7,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import com.chichiangho.base.R
-import com.chichiangho.base.extentions.format
+import com.chichiangho.common.extentions.format
 import kotlinx.android.synthetic.main.layout_date_picker.*
 import java.util.*
 
@@ -26,7 +26,7 @@ class DateTimePicker : Dialog {
         fun onPicked(date: Date)
     }
 
-    constructor(context: Context) : super(context) {
+    constructor(context: Context?) : super(context) {
         curDate = Date(System.currentTimeMillis())
     }
 

@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import com.chichiangho.base.R
-import com.chichiangho.base.base.BaseTitleActivity
 import com.chichiangho.base.fragment.MakeOrderFragment
 import com.chichiangho.base.fragment.TakeOrderFragment
+import com.chichiangho.common.base.BaseTitleActivity
 import kotlinx.android.synthetic.main.activity_dailian.*
 
 

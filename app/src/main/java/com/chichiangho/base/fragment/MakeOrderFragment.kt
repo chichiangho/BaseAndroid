@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.chichiangho.base.R
-import com.chichiangho.base.base.BaseFragment
-import com.chichiangho.base.extentions.*
 import com.chichiangho.base.http.OkHttpClient
 import com.chichiangho.base.http.RxHttpObserver
 import com.chichiangho.base.pay.AliPrePayInfo
@@ -15,6 +13,8 @@ import com.chichiangho.base.pay.PayUtil
 import com.chichiangho.base.pay.PrePayInfo
 import com.chichiangho.base.widgets.DateTimePicker
 import com.chichiangho.base.widgets.ImageSelectorView
+import com.chichiangho.common.base.BaseFragment
+import com.chichiangho.common.extentions.*
 import com.tencent.mm.opensdk.modelpay.PayReq
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
@@ -29,10 +29,10 @@ import java.util.*
 
 class MakeOrderFragment : BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.fragment_make_order, null, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_make_order, null, false)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         photo_selector.setMaxCount(7)
         photo_selector.setOnItemClickListener(object : ImageSelectorView.OnItemClickListener {
             override fun onItemClick(v: View, position: Int) {

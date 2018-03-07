@@ -7,9 +7,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import com.chichiangho.base.R
-import com.chichiangho.base.base.BaseTabActivity
-import com.chichiangho.base.extentions.logD
 import com.chichiangho.base.fragment.HomeFragment
+import com.chichiangho.common.base.BaseTabActivity
+import com.chichiangho.common.extentions.logD
 
 
 /**

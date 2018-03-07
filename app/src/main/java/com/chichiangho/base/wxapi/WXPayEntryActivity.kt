@@ -2,10 +2,9 @@ package com.chichiangho.base.wxapi
 
 import android.content.Intent
 import android.os.Bundle
-
-import com.chichiangho.base.base.BaseActivity
-import com.chichiangho.base.extentions.toastShort
 import com.chichiangho.base.pay.PayUtil
+import com.chichiangho.common.base.BaseActivity
+import com.chichiangho.common.extentions.toastShort
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp

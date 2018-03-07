@@ -1,11 +1,11 @@
 package com.chichiangho.base.http
 
 import com.chichiangho.base.base.BaseResponse
-import com.chichiangho.base.extentions.Logger.Companion.JSON_SPLIT
-import com.chichiangho.base.extentions.logD
-import com.chichiangho.base.extentions.logJson
-import com.chichiangho.base.extentions.toJson
-import com.chichiangho.base.extentions.toObj
+import com.chichiangho.common.extentions.Logger.Companion.JSON_SPLIT
+import com.chichiangho.common.extentions.logD
+import com.chichiangho.common.extentions.logJson
+import com.chichiangho.common.extentions.toJson
+import com.chichiangho.common.extentions.toObj
 import okhttp3.*
 import java.io.File
 import java.io.FileOutputStream

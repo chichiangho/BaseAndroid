@@ -5,7 +5,6 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.ListPopupWindow
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +12,11 @@ import android.view.ViewGroup
 import android.widget.*
 import com.chichiangho.base.R
 import com.chichiangho.base.activity.DailianDetailActivity
-import com.chichiangho.base.base.BaseFragment
 import com.chichiangho.base.bean.Data
-import com.chichiangho.base.extentions.logD
 import com.chichiangho.base.widgets.RecyclerViewFooterAdapter
 import com.chichiangho.base.widgets.RefreshRecyclerView
+import com.chichiangho.common.base.BaseFragment
+import com.chichiangho.common.extentions.logD
 import kotlinx.android.synthetic.main.fragment_take_order.*
 import kotlinx.android.synthetic.main.item_dailian_trade.view.*
 import java.util.*
@@ -33,11 +32,11 @@ class TakeOrderFragment : BaseFragment() {
     private val sorts = arrayOf("价格排序", "从低到高", "从高到低")
     private lateinit var adapter: Adapter
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_take_order, null, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_take_order, null, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         logD("xx","yy")
         recycler.layoutManager = LinearLayoutManager(context)
         adapter = Adapter()

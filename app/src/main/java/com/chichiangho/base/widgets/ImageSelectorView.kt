@@ -17,9 +17,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.chichiangho.base.R
-import com.chichiangho.base.extentions.dpToPx
-import com.chichiangho.base.extentions.toastShort
+import com.chichiangho.common.extentions.dpToPx
+import com.chichiangho.common.extentions.toastShort
 import java.util.*
 
 /**
@@ -135,7 +136,7 @@ class ImageSelectorView : RecyclerView {
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            Glide.with(context).load(ImagePaths[position]).placeholder(R.drawable.btn_add).into((holder as Holder).iv)
+            Glide.with(context).load(ImagePaths[position]).apply(RequestOptions.placeholderOf(R.drawable.btn_add)).into((holder as Holder).iv)
             holder.iv.setOnClickListener {
                 onItemClickListener?.onItemClick(holder.iv, position)
             }

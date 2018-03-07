@@ -1,11 +1,11 @@
 package com.chichiangho.base.utils
 
 import android.content.Context
-import com.chichiangho.base.base.BaseApplication
 import com.chichiangho.base.base.AppConfigs
 import com.chichiangho.base.bean.User
-import com.chichiangho.base.extentions.toJson
-import com.chichiangho.base.extentions.toObj
+import com.chichiangho.common.base.BaseApplication
+import com.chichiangho.common.extentions.toJson
+import com.chichiangho.common.extentions.toObj
 
 object Preference {
     var loginUser: User? = null

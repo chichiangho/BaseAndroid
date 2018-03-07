@@ -2,9 +2,9 @@ package com.chichiangho.base.http
 
 
 import com.chichiangho.base.base.AppConfigs
-import com.chichiangho.base.extentions.onNextComplete
 import com.chichiangho.base.utils.Preference
 import com.chichiangho.base.utils.SignUtil
+import com.chichiangho.common.extentions.onNextComplete
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import java.util.*

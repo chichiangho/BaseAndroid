@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.chichiangho.base.R
-import com.chichiangho.base.base.BaseFragment
+import com.chichiangho.common.base.BaseFragment
 
 /**
  * Created by chichiangho on 2017/6/6.
@@ -15,8 +15,8 @@ import com.chichiangho.base.base.BaseFragment
 class HomeFragment : BaseFragment() {
     private var rootView: View? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        rootView = inflater!!.inflate(R.layout.fragment_home, null, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        rootView = inflater.inflate(R.layout.fragment_home, null, false)
         return rootView
     }
 }

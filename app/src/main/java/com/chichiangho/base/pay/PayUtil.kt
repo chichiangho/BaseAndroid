@@ -8,7 +8,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory
  * Created by chichiangho on 2017/3/31.
  */
 
-class PayUtil(private var activity: Activity) {
+class PayUtil(private var activity: Activity?) {
     private lateinit var prePayInfo: PrePayInfo
 
     fun setPrePayInfo(prePayInfo: PrePayInfo): PayUtil {
