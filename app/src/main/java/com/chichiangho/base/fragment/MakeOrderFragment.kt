@@ -5,16 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.chichaingho.library_rx_okhttp.OkHttpClient
 import com.chichiangho.base.R
-import com.chichiangho.base.http.OkHttpClient
-import com.chichiangho.base.http.RxHttpObserver
 import com.chichiangho.base.pay.AliPrePayInfo
 import com.chichiangho.base.pay.PayUtil
 import com.chichiangho.base.pay.PrePayInfo
-import com.chichiangho.widget_date_time_picker.DateTimePicker
 import com.chichiangho.base.widgets.ImageSelectorView
 import com.chichiangho.common.base.BaseFragment
 import com.chichiangho.common.extentions.*
+import com.chichiangho.widget_date_time_picker.DateTimePicker
 import com.tencent.mm.opensdk.modelpay.PayReq
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
@@ -44,6 +43,7 @@ class MakeOrderFragment : BaseFragment() {
         })
         et_choose_time.setOnClickListener {
             DateTimePicker(context)
+                    .setThemeColor(R.color.main_color)
                     .setShowDate(Date(System.currentTimeMillis()))
                     .setFromThen(true)
                     .setOnDateTimePickedCallback(object : DateTimePicker.OnDateTimePickedCallback {
@@ -55,50 +55,49 @@ class MakeOrderFragment : BaseFragment() {
         }
         perform.text = 103000314233L.formatDHM()
         perform.setOnClickListener {
-            Observable
-                    .create(ObservableOnSubscribe<String> { e ->
-                        val res = OkHttpClient["http://wxpay.wxutil.com/pub_v2/app/app_pay.php"].body()?.string()
-                        e.onNextComplete(res)
-                    })
-                    .io_main()
-                    .subscribe(object : RxHttpObserver<String>() {
-                        override fun onSuccess(response: String) {
-                            val json = JSONObject(response)
-                            val aliInfo = AliPrePayInfo()
-                            val weChatInfo = PayReq()
-                            val pre = PrePayInfo()
-//                        pre.ali = aliInfo
-                            pre.weChat = weChatInfo
+            disposables.add(
+                    Observable
+                            .create(ObservableOnSubscribe<String> { e ->
+                                val res = OkHttpClient["http://wxpay.wxutil.com/pub_v2/app/app_pay.php"].body()?.string()
+                                e.onNextComplete(res)
+                            })
+                            .io_main()
+                            .subscribe({ response ->
+                                val json = JSONObject(response)
+                                val aliInfo = AliPrePayInfo()
+                                val weChatInfo = PayReq()
+                                val pre = PrePayInfo()
+                                //                        pre.ali = aliInfo
+                                pre.weChat = weChatInfo
 
-                            aliInfo.app_id = "00"
-                            aliInfo.body = "yiersan"
-                            aliInfo.appenv = "xxx"
-                            aliInfo.goods_type = "xxx"
-                            aliInfo.notify_url = "xxx"
-                            aliInfo.out_trade_no = "xxx"
+                                aliInfo.app_id = "00"
+                                aliInfo.body = "yiersan"
+                                aliInfo.appenv = "xxx"
+                                aliInfo.goods_type = "xxx"
+                                aliInfo.notify_url = "xxx"
+                                aliInfo.out_trade_no = "xxx"
 
-                            weChatInfo.appId = json.getString("appid")
-                            PayUtil.wechat_app_id = weChatInfo.appId
-                            weChatInfo.partnerId = json.getString("partnerid")
-                            weChatInfo.prepayId = json.getString("prepayid")
-                            weChatInfo.nonceStr = json.getString("noncestr")
-                            weChatInfo.timeStamp = json.getString("timestamp")
-                            weChatInfo.packageValue = json.getString("package")
-                            weChatInfo.sign = json.getString("sign")
-                            weChatInfo.extData = "app data"// optional
-                            PayUtil(activity)
-                                    .setPrePayInfo(pre)
-                                    .pay(object : PayUtil.PayListener {
-                                        override fun onSuccess() {
-                                            toastShort("success")
-                                        }
+                                weChatInfo.appId = json.getString("appid")
+                                PayUtil.wechat_app_id = weChatInfo.appId
+                                weChatInfo.partnerId = json.getString("partnerid")
+                                weChatInfo.prepayId = json.getString("prepayid")
+                                weChatInfo.nonceStr = json.getString("noncestr")
+                                weChatInfo.timeStamp = json.getString("timestamp")
+                                weChatInfo.packageValue = json.getString("package")
+                                weChatInfo.sign = json.getString("sign")
+                                weChatInfo.extData = "app data"// optional
+                                PayUtil(activity)
+                                        .setPrePayInfo(pre)
+                                        .pay(object : PayUtil.PayListener {
+                                            override fun onSuccess() {
+                                                toastShort("success")
+                                            }
 
-                                        override fun onFailed(memo: String) {
-                                            toastShort(memo)
-                                        }
-                                    })
-                        }
-                    })
+                                            override fun onFailed(memo: String) {
+                                                toastShort(memo)
+                                            }
+                                        })
+                            }))
         }
     }
 

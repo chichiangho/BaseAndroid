@@ -1,10 +1,13 @@
 package com.chichiangho.base.http
 
 
+import com.chichaingho.library_rx_okhttp.HandleResponse
+import com.chichaingho.library_rx_okhttp.OkHttpClient
 import com.chichiangho.base.base.AppConfigs
 import com.chichiangho.base.utils.Preference
 import com.chichiangho.base.utils.SignUtil
 import com.chichiangho.common.extentions.onNextComplete
+import com.chichiangho.common.extentions.toJson
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import java.util.*
@@ -71,7 +74,7 @@ object RxHttpDataProvider {
 
             val requestParam = getRequestParam(bizParams, signParams)
 
-            e.onNextComplete(OkHttpClient.post(getUrl("notice/get_notice_info"), requestParam, clz))
+            e.onNextComplete(OkHttpClient.post(getUrl("notice/get_notice_info"), requestParam.toJson(), clz))
         }).map(HandleResponse<T>())
     }
 

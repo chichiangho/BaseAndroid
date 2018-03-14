@@ -1,4 +1,4 @@
-package com.chichiangho.widget_refresh_recycler
+package com.chichiangho.widget.recyclerview.extension
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -16,6 +16,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import kotlinx.android.synthetic.main.layout_refresh_footer.view.*
 
 class RefreshRecyclerView : SwipeRefreshLayout {
     private var listener: RefreshListener? = null
@@ -39,7 +40,7 @@ class RefreshRecyclerView : SwipeRefreshLayout {
         init()
     }
 
-    internal fun init() {
+    private fun init() {
         setColorSchemeResources(android.R.color.holo_blue_light,
                 android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light)
@@ -58,6 +59,8 @@ class RefreshRecyclerView : SwipeRefreshLayout {
                 outRect.bottom = 1
             }
         })//由于某些原因，无ItemDecoration时canScrollVertically()函数无法正确判断，故添加一个1px的ItemDecoration以修复
+
+        //设置touch监听器后可能会把click事件拦截掉，故此处有警告，但是要如何消除，并不想写一个自定义view
         recyclerView?.setOnTouchListener(object : View.OnTouchListener {
             var distance: Float = 0f
             var mFirstY: Float = 0f
@@ -81,9 +84,12 @@ class RefreshRecyclerView : SwipeRefreshLayout {
                         }
                         if (pulling) {
                             distance = (mFirstY - motionEvent.rawY) * 6 / 10//0.6的ratio
+                            if (distance > measuredWidth / 5)
+                                distance = (measuredWidth / 5).toFloat()
                             val params = footerView?.layoutParams
                             params?.height = distance.toInt()
                             footerView?.layoutParams = params
+                            footerTv.text = "松开加载"
                         }
                     }
                     MotionEvent.ACTION_UP -> {
@@ -223,7 +229,6 @@ class RefreshRecyclerView : SwipeRefreshLayout {
     }
 
     companion object {
-        private val TAG = "RefreshRecyclerView"
-        private val ANIME_TIME = 400L
+        private const val ANIME_TIME = 400L
     }
 }

@@ -15,8 +15,8 @@ import com.chichiangho.base.activity.DailianDetailActivity
 import com.chichiangho.base.bean.Data
 import com.chichiangho.common.base.BaseFragment
 import com.chichiangho.common.extentions.logD
-import com.chichiangho.widget_refresh_recycler.RecyclerViewFooterAdapter
-import com.chichiangho.widget_refresh_recycler.RefreshRecyclerView
+import com.chichiangho.widget.recyclerview.extension.RecyclerViewFooterAdapter
+import com.chichiangho.widget.recyclerview.extension.RefreshRecyclerView
 import kotlinx.android.synthetic.main.fragment_take_order.*
 import kotlinx.android.synthetic.main.item_dailian_trade.view.*
 import java.util.*
@@ -48,11 +48,21 @@ class TakeOrderFragment : BaseFragment() {
         })
         refresh.setListener(object : RefreshRecyclerView.RefreshListener {
             override fun onRefresh() {
-                requestData(0)
+//                showLoading("loading")
+                Handler().postDelayed({
+                    refresh.isRefreshing = false
+                    adapter.setData(mainList.clone() as ArrayList<Data>)
+                    hideLoading()
+                }, 2000)
             }
 
             override fun onLoadMore() {
-                requestData(0)
+//                showLoading("loading")
+                Handler().postDelayed({
+                    refresh.isRefreshing = false
+                    adapter.appendData(mainList.clone() as ArrayList<Data>)
+                    hideLoading()
+                }, 2000)
             }
         })
 
@@ -61,20 +71,12 @@ class TakeOrderFragment : BaseFragment() {
         btn_choose_state.setOnClickListener { showPopup(btn_choose_state_upper, states, AdapterView.OnItemClickListener { _, _, i, _ -> btn_choose_state.text = states[i] }) }
         btn_choose_sort.setOnClickListener { showPopup(btn_choose_sort_upper, sorts, AdapterView.OnItemClickListener { _, _, i, _ -> btn_choose_sort.text = sorts[i] }) }
 
+        adapter.setData(mainList.clone() as ArrayList<Data>)
         mainList.add(Data())
         mainList.add(Data())
         mainList.add(Data())
         mainList.add(Data())
-        adapter.setData(mainList)
-    }
-
-    private fun requestData(pageIndex: Int) {
-        showLoading("loading")
-        Handler().postDelayed({
-            refresh.isRefreshing = false
-            adapter.setData(mainList)
-            hideLoading()
-        }, 2000)
+//        adapter.setData(mainList)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -100,6 +102,10 @@ class TakeOrderFragment : BaseFragment() {
     }
 
     private inner class Adapter : RecyclerViewFooterAdapter<Data>() {
+
+//        override fun getEmptyView(): View? {
+//            return layoutInflater.inflate(R.layout.layout_title,null)
+//        }
 
         override fun onCreate(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return Holder(LayoutInflater.from(context).inflate(R.layout.item_dailian_trade, null, false))

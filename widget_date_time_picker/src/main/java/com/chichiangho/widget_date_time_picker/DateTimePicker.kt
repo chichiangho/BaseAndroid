@@ -2,6 +2,7 @@ package com.chichiangho.widget_date_time_picker
 
 import android.app.Dialog
 import android.content.Context
+import android.support.annotation.ColorRes
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -15,7 +16,7 @@ import java.util.*
  * Created by chichiangho on 2017/7/15.
  */
 
-class DateTimePicker : Dialog {
+class DateTimePicker(context: Context?) : Dialog(context) {
     private var type = 0x11
     private lateinit var onDateTimePickedCallback: OnDateTimePickedCallback
     private var curDate: Date
@@ -26,8 +27,21 @@ class DateTimePicker : Dialog {
         fun onPicked(date: Date)
     }
 
-    constructor(context: Context?) : super(context) {
+    init {
         curDate = Date(System.currentTimeMillis())
+    }
+
+    private var themeColor: Int = 0
+
+    fun setThemeColor(@ColorRes colorRes: Int): DateTimePicker {
+        themeColor = colorRes
+        return this
+    }
+
+    private fun setPickerTheme(picker: OptimizedNumberPicker, @ColorRes colorRes: Int) {
+        picker.setSelectedTextColor(context.resources.getColor(colorRes))
+        picker.setHintTextColor(context.resources.getColor(colorRes))
+        picker.setDividerColor(context.resources.getColor(colorRes))
     }
 
     /**
@@ -71,6 +85,15 @@ class DateTimePicker : Dialog {
         setContentView(R.layout.layout_date_picker)
         setCanceledOnTouchOutside(true)
 
+        if (themeColor > 0) {
+            perform.setTextColor(context.resources.getColor(themeColor))
+            setPickerTheme(yearPicker, themeColor)
+            setPickerTheme(monthPicker, themeColor)
+            setPickerTheme(dayPicker, themeColor)
+            setPickerTheme(hourPicker, themeColor)
+            setPickerTheme(minutePicker, themeColor)
+        }
+
         val lp = window.attributes
         lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
@@ -97,18 +120,22 @@ class DateTimePicker : Dialog {
 
         if (type and TYPE_DATE > 0) {
             dayPicker.visibility = View.VISIBLE
-            if (fromThen) {
-                dayPicker.displayedValues = getDisplayValues(calendar.get(Calendar.DAY_OF_MONTH), 31)
-                dayPicker.minValue = calendar.get(Calendar.DAY_OF_MONTH)
-                dayPicker.maxValue = getMaxDay(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1)
-            } else if (untilThen) {
-                dayPicker.displayedValues = getDisplayValues(1, calendar.get(Calendar.DAY_OF_MONTH))
-                dayPicker.minValue = 1
-                dayPicker.maxValue = calendar.get(Calendar.DAY_OF_MONTH)
-            } else {
-                dayPicker.displayedValues = getDisplayValues(1, 31)
-                dayPicker.minValue = 1
-                dayPicker.maxValue = getMaxDay(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1)
+            when {
+                fromThen -> {
+                    dayPicker.displayedValues = getDisplayValues(calendar.get(Calendar.DAY_OF_MONTH), 31)
+                    dayPicker.minValue = calendar.get(Calendar.DAY_OF_MONTH)
+                    dayPicker.maxValue = getMaxDay(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1)
+                }
+                untilThen -> {
+                    dayPicker.displayedValues = getDisplayValues(1, calendar.get(Calendar.DAY_OF_MONTH))
+                    dayPicker.minValue = 1
+                    dayPicker.maxValue = calendar.get(Calendar.DAY_OF_MONTH)
+                }
+                else -> {
+                    dayPicker.displayedValues = getDisplayValues(1, 31)
+                    dayPicker.minValue = 1
+                    dayPicker.maxValue = getMaxDay(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1)
+                }
             }
             dayPicker.setOnValueChangedListener(object : OptimizedNumberPicker.OnValueChangeListener {
                 override fun onValueChange(picker: OptimizedNumberPicker, oldVal: Int, newVal: Int) {
@@ -141,18 +168,22 @@ class DateTimePicker : Dialog {
             yearPicker.value = calendar.get(Calendar.YEAR)
 
             monthPicker.visibility = View.VISIBLE
-            if (fromThen) {
-                monthPicker.displayedValues = getDisplayValues(calendar.get(Calendar.MONTH) + 1, 13)
-                monthPicker.minValue = calendar.get(Calendar.MONTH) + 1
-                monthPicker.maxValue = 12
-            } else if (untilThen) {
-                monthPicker.displayedValues = getDisplayValues(1, calendar.get(Calendar.MONTH) + 1)
-                monthPicker.minValue = 1
-                monthPicker.maxValue = calendar.get(Calendar.MONTH) + 1
-            } else {
-                monthPicker.displayedValues = getDisplayValues(1, 12)
-                monthPicker.minValue = 1
-                monthPicker.maxValue = 12
+            when {
+                fromThen -> {
+                    monthPicker.displayedValues = getDisplayValues(calendar.get(Calendar.MONTH) + 1, 13)
+                    monthPicker.minValue = calendar.get(Calendar.MONTH) + 1
+                    monthPicker.maxValue = 12
+                }
+                untilThen -> {
+                    monthPicker.displayedValues = getDisplayValues(1, calendar.get(Calendar.MONTH) + 1)
+                    monthPicker.minValue = 1
+                    monthPicker.maxValue = calendar.get(Calendar.MONTH) + 1
+                }
+                else -> {
+                    monthPicker.displayedValues = getDisplayValues(1, 12)
+                    monthPicker.minValue = 1
+                    monthPicker.maxValue = 12
+                }
             }
             monthPicker.setOnValueChangedListener(object : OptimizedNumberPicker.OnValueChangeListener {
                 override fun onValueChange(picker: OptimizedNumberPicker, oldVal: Int, newVal: Int) {
@@ -167,18 +198,22 @@ class DateTimePicker : Dialog {
 
         if (type and TYPE_TIME > 0) {
             hourPicker.visibility = View.VISIBLE
-            if (fromThen) {
-                hourPicker.displayedValues = getDisplayValues(calendar.get(Calendar.HOUR_OF_DAY), 23)
-                hourPicker.minValue = calendar.get(Calendar.HOUR_OF_DAY)
-                hourPicker.maxValue = 23
-            } else if (untilThen) {
-                hourPicker.displayedValues = getDisplayValues(0, calendar.get(Calendar.HOUR_OF_DAY))
-                hourPicker.minValue = 0
-                hourPicker.maxValue = calendar.get(Calendar.HOUR_OF_DAY)
-            } else {
-                hourPicker.displayedValues = getDisplayValues(0, 23)
-                hourPicker.minValue = 0
-                hourPicker.maxValue = 23
+            when {
+                fromThen -> {
+                    hourPicker.displayedValues = getDisplayValues(calendar.get(Calendar.HOUR_OF_DAY), 23)
+                    hourPicker.minValue = calendar.get(Calendar.HOUR_OF_DAY)
+                    hourPicker.maxValue = 23
+                }
+                untilThen -> {
+                    hourPicker.displayedValues = getDisplayValues(0, calendar.get(Calendar.HOUR_OF_DAY))
+                    hourPicker.minValue = 0
+                    hourPicker.maxValue = calendar.get(Calendar.HOUR_OF_DAY)
+                }
+                else -> {
+                    hourPicker.displayedValues = getDisplayValues(0, 23)
+                    hourPicker.minValue = 0
+                    hourPicker.maxValue = 23
+                }
             }
             hourPicker.value = calendar.get(Calendar.HOUR_OF_DAY)
             hourPicker.setOnValueChangedListener(object : OptimizedNumberPicker.OnValueChangeListener {
@@ -188,18 +223,22 @@ class DateTimePicker : Dialog {
                 }
             })
             minutePicker.visibility = View.VISIBLE
-            if (fromThen) {
-                minutePicker.displayedValues = getDisplayValues(calendar.get(Calendar.MINUTE), 59)
-                minutePicker.minValue = calendar.get(Calendar.MINUTE)
-                minutePicker.maxValue = 59
-            } else if (untilThen) {
-                minutePicker.displayedValues = getDisplayValues(0, calendar.get(Calendar.MINUTE))
-                minutePicker.minValue = 0
-                minutePicker.maxValue = calendar.get(Calendar.MINUTE)
-            } else {
-                minutePicker.displayedValues = getDisplayValues(0, 59)
-                minutePicker.minValue = 0
-                minutePicker.maxValue = 59
+            when {
+                fromThen -> {
+                    minutePicker.displayedValues = getDisplayValues(calendar.get(Calendar.MINUTE), 59)
+                    minutePicker.minValue = calendar.get(Calendar.MINUTE)
+                    minutePicker.maxValue = 59
+                }
+                untilThen -> {
+                    minutePicker.displayedValues = getDisplayValues(0, calendar.get(Calendar.MINUTE))
+                    minutePicker.minValue = 0
+                    minutePicker.maxValue = calendar.get(Calendar.MINUTE)
+                }
+                else -> {
+                    minutePicker.displayedValues = getDisplayValues(0, 59)
+                    minutePicker.minValue = 0
+                    minutePicker.maxValue = 59
+                }
             }
             minutePicker.value = calendar.get(Calendar.MINUTE)
             minutePicker.setOnValueChangedListener(object : OptimizedNumberPicker.OnValueChangeListener {
@@ -277,7 +316,7 @@ class DateTimePicker : Dialog {
     private fun changeMinute(calendar: Calendar) {
         if (type and TYPE_TIME > 0) {
             if ((type and TYPE_DATE > 0 && yearPicker.value == calendar.get(Calendar.YEAR) && monthPicker.value == calendar.get(Calendar.MONTH) + 1
-                    && dayPicker.value == calendar.get(Calendar.DAY_OF_MONTH) || type and TYPE_DATE == 0) && hourPicker.value == calendar.get(Calendar.HOUR_OF_DAY)) {
+                            && dayPicker.value == calendar.get(Calendar.DAY_OF_MONTH) || type and TYPE_DATE == 0) && hourPicker.value == calendar.get(Calendar.HOUR_OF_DAY)) {
                 if (fromThen) {
                     minutePicker.refreshByNewDisplayedValues(getDisplayValues(calendar.get(Calendar.MINUTE), 59))
                     minutePicker.minValue = calendar.get(Calendar.MINUTE)
@@ -296,16 +335,17 @@ class DateTimePicker : Dialog {
     }
 
     private fun getMaxDay(year: Int, month: Int): Int {
-        if (month == 2) {
-            if (year % 4 == 0 && (year % 100 == 0 && year % 400 == 0 || year % 100 != 0)) {
-                return 29
-            } else {
-                return 28
-            }
-        } else if (month == 4 || month == 6 || month == 9 || month == 11) {
-            return 30
-        } else {
-            return 31
+        return when (month) {
+            2 ->
+                if (year % 4 == 0 && (year % 100 == 0 && year % 400 == 0 || year % 100 != 0)) {
+                    29
+                } else {
+                    28
+                }
+            4, 6, 9, 11 ->
+                30
+            else ->
+                31
         }
     }
 

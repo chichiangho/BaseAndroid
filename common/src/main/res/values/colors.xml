@@ -10,7 +10,7 @@
     <color name="tab_text_normal">#BDBDBD</color>
     <color name="tab_text_checked">#00163B</color>
 
-    <color name="main_color">#db525a</color>transparent
+    <color name="main_color">#db525a</color>
     <color name="transparent">#00000000</color>
     <color name="tab_normal">@color/white</color>
     <color name="tab_checked">@color/main_color</color>

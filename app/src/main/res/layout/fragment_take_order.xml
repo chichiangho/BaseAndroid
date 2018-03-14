@@ -115,7 +115,7 @@
             android:text="价格" />
     </LinearLayout>
 
-    <com.chichiangho.widget_refresh_recycler.RefreshRecyclerView
+    <com.chichiangho.widget.recyclerview.extension.RefreshRecyclerView
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -124,5 +124,5 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </com.chichiangho.widget_refresh_recycler.RefreshRecyclerView>
+    </com.chichiangho.widget.recyclerview.extension.RefreshRecyclerView>
 </LinearLayout>

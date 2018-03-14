@@ -3,13 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 26
-
-
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -29,11 +27,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation rootProject.ext.dependency.appcompat_v7
+    testImplementation rootProject.ext.dependency.junit
+    androidTestImplementation rootProject.ext.dependency.test_runner
+    androidTestImplementation rootProject.ext.dependency.test_runner
 
-    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile rootProject.ext.dependency.recyclerview_v7
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
