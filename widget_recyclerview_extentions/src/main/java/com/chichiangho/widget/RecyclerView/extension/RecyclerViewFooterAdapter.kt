@@ -26,9 +26,9 @@ abstract class RecyclerViewFooterAdapter<T> : RecyclerViewWithEmptyAdapter<T>() 
         return super.onCreateViewHolder(parent, viewType)
     }
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        val manager = recyclerView?.layoutManager
+        val manager = recyclerView.layoutManager
         if (manager is GridLayoutManager) {
             manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
@@ -41,9 +41,9 @@ abstract class RecyclerViewFooterAdapter<T> : RecyclerViewWithEmptyAdapter<T>() 
         }
     }
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder?) {
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        val lp = holder?.itemView?.layoutParams
+        val lp = holder.itemView?.layoutParams
         if (lp != null && lp is StaggeredGridLayoutManager.LayoutParams
                 && holder.layoutPosition == 0) {
             lp.isFullSpan = true
