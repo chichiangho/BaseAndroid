@@ -6,7 +6,7 @@ import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
 import java.io.IOException
-import java.util.regex.Pattern
+import java.lang.reflect.Type
 
 private val gson = GsonBuilder().registerTypeAdapterFactory(EmptyAdapterFactory()).create()!!
 private val stringAdapter = StringAdapter()
@@ -14,19 +14,16 @@ private val intAdapter = IntegerAdapter()
 private val longAdapter = LongAdapter()
 private val doubleAdapter = DoubleAdapter()
 
-fun Double.formatCNY(): String = String.format("￥ %.2f", this)
-
-fun Double.reserveFraction(figures: Int = 2): String = String.format("%." + figures + "f", this)
-
-fun String.isCellPhone(): Boolean = Pattern.compile("1[34578]\\d{9}").matcher(this).matches()
-
 fun Any.toJson(): String = gson.toJson(this)
-
-fun String.durationTo(end: String) = String.format("%1s - %2s", this, end)
 
 @Throws(JsonSyntaxException::class)
 fun <T> String.toObj(clazz: Class<T>): T = gson.fromJson(this, clazz)
 
+
+@Throws(JsonSyntaxException::class)
+fun <T> String.toObj(type: Type): T = gson.fromJson(this, type)
+
+@Throws(JsonSyntaxException::class)
 fun <T> String.toObjArray(clz: Class<T>): ArrayList<T> {
     val array = JsonParser().parse(this).asJsonArray
     return array.mapTo(ArrayList()) { gson.fromJson(it, clz) }
