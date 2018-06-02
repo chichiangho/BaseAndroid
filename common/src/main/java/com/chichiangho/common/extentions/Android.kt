@@ -21,7 +21,7 @@ fun toast(string: String?, type: Int = Toast.LENGTH_SHORT) {
     if (Looper.getMainLooper() === Looper.myLooper())
         Toast.makeText(appCtx, string, type).show()
     else
-        BaseApplication.topActivity.get()?.runOnUiThread {
+        BaseApplication.getTopActivity()?.runOnUiThread {
             Toast.makeText(appCtx, string, type).show()
         }
 }
@@ -34,15 +34,13 @@ fun dpToPx(dp: Int): Int =
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), appCtx.resources.displayMetrics).toInt()
 
 fun showLoading(string: String = "") {
-    BaseApplication.topActivity.get()?.let {
+    BaseApplication.getTopActivity()?.let {
         LoadingDialog.with(it).setMsg(string).show()
     }
 }
 
 fun hideLoading() {
-    BaseApplication.topActivity.get()?.let {
-        LoadingDialog.dismiss(it)
-    }
+    LoadingDialog.dismiss()
 }
 
 private fun Activity.doOnEvent(event: String, action: () -> Unit) {
@@ -56,6 +54,15 @@ private fun Activity.doOnEvent(event: String, action: () -> Unit) {
     listeners?.get(event)?.add(action)
 }
 
-fun Activity.doOnDestroy(action: () -> Unit) {
-    this.doOnEvent("onDestroy", action)
+
+fun Activity.doOnResumed(action: () -> Unit) {
+    this.doOnEvent("onResumed", action)
+}
+
+fun Activity.doOnPaused(action: () -> Unit) {
+    this.doOnEvent("onPaused", action)
+}
+
+fun Activity.doOnDestroyed(action: () -> Unit) {
+    this.doOnEvent("onDestroyed", action)
 }

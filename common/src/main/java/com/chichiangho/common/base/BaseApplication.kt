@@ -4,29 +4,36 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import java.lang.ref.WeakReference
+import com.squareup.leakcanary.LeakCanary
+import com.squareup.leakcanary.RefWatcher
+import java.util.*
+import kotlin.collections.ArrayList
 
-class BaseApplication : Application() {
+open class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
 
-
+        refWatcher = LeakCanary.install(this)
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityPaused(activity: Activity) {
+                lifeCycleListenerMap[activity]?.get("onPaused")?.forEach { it() }
             }
 
             override fun onActivityResumed(activity: Activity) {
+                lifeCycleListenerMap[activity]?.get("onResumed")?.forEach { it() }
             }
 
             override fun onActivityStarted(activity: Activity) {
             }
 
             override fun onActivityDestroyed(activity: Activity) {
-                lifeCycleListenerMap[activity]?.get("onDestroy")?.forEach { it() }
+                activityStack.remove(activity)
+                lifeCycleListenerMap[activity]?.get("onDestroyed")?.forEach { it() }
                 lifeCycleListenerMap.remove(activity)
+                refWatcher.watch(activity)
             }
 
             override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle?) {
@@ -36,14 +43,24 @@ class BaseApplication : Application() {
             }
 
             override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
-                topActivity = WeakReference(activity)
+                activityStack.add(activity)
             }
         })
     }
 
     companion object {
+        lateinit var refWatcher: RefWatcher
         lateinit var appContext: Context
-        lateinit var topActivity: WeakReference<Activity>
+        private val activityStack = ArrayList<Activity>()
         val lifeCycleListenerMap = HashMap<Activity, HashMap<String, ArrayList<() -> Unit>>>()
+
+        fun getTopActivity(): Activity? {
+            for (i in activityStack.size - 1 downTo 0) {
+                val top = activityStack[i]
+                if (!top.isDestroyed)
+                    return top
+            }
+            return null
+        }
     }
 }
