@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.chichiangho.base.pay.PayUtil
 import com.chichiangho.common.base.BaseActivity
-import com.chichiangho.common.extentions.toastShort
+import com.chichiangho.common.extentions.toast
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
@@ -37,7 +37,7 @@ class WXPayEntryActivity : BaseActivity(), IWXAPIEventHandler {
             when (baseResp.errCode) {
                 BaseResp.ErrCode.ERR_OK -> finish()
                 else -> {
-                    toastShort("${baseResp.errCode}")
+                    toast("${baseResp.errCode}")
                     finish()
                 }
             }

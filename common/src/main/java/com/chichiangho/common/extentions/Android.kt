@@ -1,29 +1,61 @@
 package com.chichiangho.common.extentions
 
+import android.app.Activity
 import android.content.Context
 import android.os.Looper
+import android.support.annotation.ColorRes
+import android.support.annotation.DimenRes
 import android.util.TypedValue
 import android.widget.Toast
 import com.chichiangho.common.base.BaseApplication
+import com.chichiangho.common.base.LoadingDialog
+import java.util.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.set
 
 val appCtx: Context
     get() = BaseApplication.appContext
 
-fun toastShort(string: String?) {
+fun toast(string: String?, type: Int = Toast.LENGTH_SHORT) {
     if (string == null) return
     if (Looper.getMainLooper() === Looper.myLooper())
-        Toast.makeText(appCtx, string, Toast.LENGTH_SHORT).show()
+        Toast.makeText(appCtx, string, type).show()
+    else
+        BaseApplication.topActivity.get()?.runOnUiThread {
+            Toast.makeText(appCtx, string, type).show()
+        }
 }
 
-fun toastLong(string: String?) {
-    if (string == null) return
-    if (Looper.getMainLooper() === Looper.myLooper())
-        Toast.makeText(appCtx, string, Toast.LENGTH_LONG).show()
-}
+fun getDimension(@DimenRes id: Int) = appCtx.resources.getDimension(id).toInt()
 
-fun getDimension(id: Int) = appCtx.resources.getDimension(id).toInt()
+fun getColor(@ColorRes id: Int) = appCtx.resources.getColor(id)
 
 fun dpToPx(dp: Int): Int =
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), appCtx.resources.displayMetrics).toInt()
 
+fun showLoading(string: String = "") {
+    BaseApplication.topActivity.get()?.let {
+        LoadingDialog.with(it).setMsg(string).show()
+    }
+}
 
+fun hideLoading() {
+    BaseApplication.topActivity.get()?.let {
+        LoadingDialog.dismiss(it)
+    }
+}
+
+private fun Activity.doOnEvent(event: String, action: () -> Unit) {
+    BaseApplication.lifeCycleListenerMap[this] ?: let {
+        BaseApplication.lifeCycleListenerMap[this] = HashMap()
+    }
+    val listeners = BaseApplication.lifeCycleListenerMap[this]
+    listeners?.get(event) ?: let {
+        BaseApplication.lifeCycleListenerMap[this]?.put(event, ArrayList())
+    }
+    listeners?.get(event)?.add(action)
+}
+
+fun Activity.doOnDestroy(action: () -> Unit) {
+    this.doOnEvent("onDestroy", action)
+}

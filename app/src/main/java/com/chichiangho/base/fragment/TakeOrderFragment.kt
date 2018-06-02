@@ -14,7 +14,9 @@ import com.chichiangho.base.R
 import com.chichiangho.base.activity.DailianDetailActivity
 import com.chichiangho.base.bean.Data
 import com.chichiangho.common.base.BaseFragment
+import com.chichiangho.common.extentions.hideLoading
 import com.chichiangho.common.extentions.logD
+import com.chichiangho.common.extentions.showLoading
 import com.chichiangho.widget.recyclerview.extension.RecyclerViewFooterAdapter
 import com.chichiangho.widget.recyclerview.extension.RefreshRecyclerView
 import kotlinx.android.synthetic.main.fragment_take_order.*
@@ -48,7 +50,7 @@ class TakeOrderFragment : BaseFragment() {
         })
         refresh.setListener(object : RefreshRecyclerView.RefreshListener {
             override fun onRefresh() {
-//                showLoading("loading")
+                showLoading("loading")
                 Handler().postDelayed({
                     refresh.isRefreshing = false
                     adapter.setData(mainList.clone() as ArrayList<Data>)

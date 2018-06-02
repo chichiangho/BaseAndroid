@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chichiangho.base.R
 import com.chichiangho.common.extentions.dpToPx
-import com.chichiangho.common.extentions.toastShort
+import com.chichiangho.common.extentions.toast
 import java.util.*
 
 /**
@@ -85,7 +85,7 @@ class ImageSelectorView : RecyclerView {
     fun setData(position: Int, uri: Uri) {
         val path = getRealFilePath(uri)
         if (path == null) {
-            toastShort("第" + (position + 1) + "张图片不存在，请选择其他图片")
+            toast("第" + (position + 1) + "张图片不存在，请选择其他图片")
             return
         }
         if (position == ImagePaths.size - 1 && position < maxCount - 1)

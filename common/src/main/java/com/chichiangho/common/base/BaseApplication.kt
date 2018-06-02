@@ -1,17 +1,49 @@
 package com.chichiangho.common.base
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.os.Bundle
+import java.lang.ref.WeakReference
 
 class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
-        //不要在application中做太多事，否则将导致启动app时出现白屏等情况，可将一些初始化操作放在splash界面的onCreate中，以给用户更好的呈现效果
+
+
+
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityPaused(activity: Activity) {
+            }
+
+            override fun onActivityResumed(activity: Activity) {
+            }
+
+            override fun onActivityStarted(activity: Activity) {
+            }
+
+            override fun onActivityDestroyed(activity: Activity) {
+                lifeCycleListenerMap[activity]?.get("onDestroy")?.forEach { it() }
+                lifeCycleListenerMap.remove(activity)
+            }
+
+            override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle?) {
+            }
+
+            override fun onActivityStopped(activity: Activity) {
+            }
+
+            override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
+                topActivity = WeakReference(activity)
+            }
+        })
     }
 
     companion object {
         lateinit var appContext: Context
+        lateinit var topActivity: WeakReference<Activity>
+        val lifeCycleListenerMap = HashMap<Activity, HashMap<String, ArrayList<() -> Unit>>>()
     }
 }

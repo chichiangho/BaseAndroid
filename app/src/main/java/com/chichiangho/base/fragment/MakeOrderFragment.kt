@@ -90,11 +90,11 @@ class MakeOrderFragment : BaseFragment() {
                                         .setPrePayInfo(pre)
                                         .pay(object : PayUtil.PayListener {
                                             override fun onSuccess() {
-                                                toastShort("success")
+                                                toast("success")
                                             }
 
                                             override fun onFailed(memo: String) {
-                                                toastShort(memo)
+                                                toast(memo)
                                             }
                                         })
                             }))

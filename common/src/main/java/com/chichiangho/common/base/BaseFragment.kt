@@ -9,22 +9,10 @@ import io.reactivex.disposables.CompositeDisposable
  */
 
 abstract class BaseFragment : Fragment() {
-    private lateinit var loadingDialog: LoadingDialog
     protected var disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadingDialog = LoadingDialog(context)
-    }
-
-    protected fun showLoading(info: String) {
-        loadingDialog.setMsg(info)
-        if (activity?.isFinishing == false)
-            loadingDialog.show()
-    }
-
-    protected fun hideLoading() {
-        loadingDialog.dismiss()
     }
 
     override fun onDestroy() {

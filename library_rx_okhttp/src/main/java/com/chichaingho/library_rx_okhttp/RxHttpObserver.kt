@@ -1,7 +1,7 @@
 package com.chichaingho.library_rx_okhttp
 
 import com.chichiangho.common.extentions.toObj
-import com.chichiangho.common.extentions.toastShort
+import com.chichiangho.common.extentions.toast
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import java.net.ConnectException
@@ -28,28 +28,28 @@ abstract class RxHttpObserver<T> : Observer<T> {
                         it.startsWith("{") -> {
                             val res = it.toObj(BaseResponse::class.java)
                             when (res.code) {
-//                                BaseResponse.CODE_NET_ERROR -> toastShort("网络错误，请稍后再试...")
+//                                BaseResponse.CODE_NET_ERROR -> toast("网络错误，请稍后再试...")
                                 BaseResponse.CODE_TOKEN_TIMEOUT -> {
-//                                    toastShort(res.message)
+//                                    toast(res.message)
 //                                    PreferanceUtil.removeMarkCarInfo()
 //                                    PreferanceUtil.removeUserInfo()
 //                                    val intent = Intent(BaseApplication.getInstance(), LoginActivity::class.java)
 //                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
 //                                    BaseApplication.getInstance().startActivity(intent)
                                 }
-                                else -> toastShort(res.msg)
+                                else -> toast(res.msg)
                             }
                         }
-                        else -> toastShort(it)
+                        else -> toast(it)
                     }
                 }
             }
             is SocketTimeoutException ->
-                toastShort("网络超时，请重试")
+                toast("网络超时，请重试")
             is ConnectException ->
-                toastShort("网络连接失败，请检查网络")
+                toast("网络连接失败，请检查网络")
             else ->
-                toastShort(e.message)
+                toast(e.message)
         }
 
         onFailed()
