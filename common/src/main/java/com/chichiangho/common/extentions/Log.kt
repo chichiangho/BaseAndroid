@@ -17,6 +17,26 @@ import java.io.IOException
 
 val log = if (BuildConfig.DEBUG) Logger() else null
 
+fun logV(msg: String) {
+    log?.v(Logger.DEFAULT_TAG, msg)
+}
+
+fun logD(msg: String) {
+    log?.d(Logger.DEFAULT_TAG, msg)
+}
+
+fun logI(msg: String) {
+    log?.i(Logger.DEFAULT_TAG, msg)
+}
+
+fun logW(msg: String) {
+    log?.w(Logger.DEFAULT_TAG, msg)
+}
+
+fun logE(msg: String) {
+    log?.e(Logger.DEFAULT_TAG, msg)
+}
+
 fun logV(tag: String, msg: String) {
     log?.v(tag, msg)
 }
@@ -47,6 +67,7 @@ fun logToFile(time: String, msg: Any?, fileName: String) {
 
 class Logger {
     companion object {
+        val DEFAULT_TAG = "Logger"
         val JSON_SPLIT = "( ゜- ゜)つロ"
         private val SINGLE_DIVIDER = "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈"
         val TOP_BORDER = '┌' + SINGLE_DIVIDER + SINGLE_DIVIDER
