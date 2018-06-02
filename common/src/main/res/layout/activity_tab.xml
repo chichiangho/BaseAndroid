@@ -16,7 +16,7 @@
         style="@style/divider_style"
         android:visibility="gone" />
 
-    <com.chichiangho.common.base.TabViewPager
+    <com.chichiangho.common.base.LimitAbleViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
