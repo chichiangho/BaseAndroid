@@ -37,6 +37,10 @@ fun logE(msg: String) {
     log?.e(Logger.DEFAULT_TAG, msg)
 }
 
+fun logJson(msg: String) {
+    log?.json(Logger.DEFAULT_TAG, msg)
+}
+
 fun logV(tag: String, msg: String) {
     log?.v(tag, msg)
 }

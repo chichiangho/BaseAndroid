@@ -3,18 +3,32 @@ package com.chichiangho.common.base
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import java.util.*
 import kotlin.collections.ArrayList
 
 open class BaseApplication : Application() {
+    lateinit var refWatcher: RefWatcher
+    lateinit var appContext: Context
+    private val activityStack = ArrayList<Activity>()
+    val lifeCycleListenerMap = HashMap<Activity, HashMap<String, ArrayList<() -> Unit>>>()
+
+    fun getTopActivity(): Activity? {
+        for (i in activityStack.size - 1 downTo 0) {
+            val top = activityStack[i]
+            if (!top.isDestroyed)
+                return top
+        }
+        return null
+    }
 
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
-
         refWatcher = LeakCanary.install(this)
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
@@ -49,18 +63,6 @@ open class BaseApplication : Application() {
     }
 
     companion object {
-        lateinit var refWatcher: RefWatcher
-        lateinit var appContext: Context
-        private val activityStack = ArrayList<Activity>()
-        val lifeCycleListenerMap = HashMap<Activity, HashMap<String, ArrayList<() -> Unit>>>()
-
-        fun getTopActivity(): Activity? {
-            for (i in activityStack.size - 1 downTo 0) {
-                val top = activityStack[i]
-                if (!top.isDestroyed)
-                    return top
-            }
-            return null
-        }
+        lateinit var instance: BaseApplication
     }
 }

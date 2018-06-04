@@ -9,6 +9,7 @@ import android.view.Window
 import android.view.WindowManager
 import com.chichaingho.widget_date_time_picker.R
 import com.chichiangho.common.extentions.format
+import com.chichiangho.common.extentions.parseColor
 import kotlinx.android.synthetic.main.layout_date_picker.*
 import java.util.*
 
@@ -39,9 +40,9 @@ class DateTimePicker(context: Context?) : Dialog(context) {
     }
 
     private fun setPickerTheme(picker: OptimizedNumberPicker, @ColorRes colorRes: Int) {
-        picker.setSelectedTextColor(context.resources.getColor(colorRes))
-        picker.setHintTextColor(context.resources.getColor(colorRes))
-        picker.setDividerColor(context.resources.getColor(colorRes))
+        picker.setSelectedTextColor(parseColor(colorRes))
+        picker.setHintTextColor(parseColor(colorRes))
+        picker.setDividerColor(parseColor(colorRes))
     }
 
     /**

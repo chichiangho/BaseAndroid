@@ -40,7 +40,7 @@ object CityDBManager {
 
     private val dbPath: String
         get() =
-            File.separator + "data"+Environment.getDataDirectory().absolutePath + File.separator+ BaseApplication.appContext.packageName + File.separator + "databases" + File.separator
+            File.separator + "data"+Environment.getDataDirectory().absolutePath + File.separator+ BaseApplication.instance.packageName + File.separator + "databases" + File.separator
 
     fun copyDBFile() {
         val dir = File(dbPath)
@@ -52,7 +52,7 @@ object CityDBManager {
             val `is`: InputStream
             val os: OutputStream
             try {
-                `is` = BaseApplication.appContext.resources.assets.open(ASSETS_NAME)
+                `is` = BaseApplication.instance.resources.assets.open(ASSETS_NAME)
                 os = FileOutputStream(dbFile)
                 val buffer = ByteArray(BUFFER_SIZE)
                 var length: Int

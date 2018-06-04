@@ -51,7 +51,6 @@ class TakeOrderFragment : BaseFragment() {
         refresh.setListener(object : RefreshRecyclerView.RefreshListener {
             override fun onRefresh() {
                 showLoading("loading")
-                showLoading("loading2")
                 Handler().postDelayed({
                     refresh.isRefreshing = false
                     adapter.setData(mainList.clone() as ArrayList<Data>)

@@ -16,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.changhong.common.R
+import com.chichiangho.common.extentions.parseColor
 import kotlinx.android.synthetic.main.activity_tab.*
 import java.util.*
 
@@ -54,7 +55,7 @@ abstract class BaseTabActivity : BaseTitleActivity() {
     }
 
     protected open fun onViewPagerSelected(arg0: Int) {
-        cur.tv.setTextColor(resources.getColor(mTextNormal))
+        cur.tv.setTextColor(parseColor(mTextNormal))
         cur.iv.setImageResource(cur.imgNormal)
         if (mNeedUnderHint)
             cur.under.visibility = View.GONE
@@ -100,7 +101,7 @@ abstract class BaseTabActivity : BaseTitleActivity() {
             mTab = bottom_layout
             bottom_divider.visibility = View.VISIBLE
         }
-        mTab.setBackgroundColor(resources.getColor(mTabBgColor))
+        mTab.setBackgroundColor(parseColor(mTabBgColor))
         if (mList.size > 1)
             mTab.visibility = View.VISIBLE
 

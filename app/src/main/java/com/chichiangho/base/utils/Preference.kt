@@ -16,7 +16,7 @@ object Preference {
         }
 
     private fun set(key: String, defValue: Any, asynchronous: Boolean = true) {
-        val sharedPreferences = BaseApplication.appContext
+        val sharedPreferences = BaseApplication.instance
                 .getSharedPreferences(AppConfigs.PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
@@ -35,7 +35,7 @@ object Preference {
     }
 
     private fun get(key: String, defValue: Any): Any {
-        val sharedPreferences = BaseApplication.appContext.getSharedPreferences(AppConfigs.PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences = BaseApplication.instance.getSharedPreferences(AppConfigs.PREFERENCE_NAME, Context.MODE_PRIVATE)
 
         return when (defValue.javaClass.simpleName) {
             "Integer" -> sharedPreferences.getInt(key, defValue as Int)

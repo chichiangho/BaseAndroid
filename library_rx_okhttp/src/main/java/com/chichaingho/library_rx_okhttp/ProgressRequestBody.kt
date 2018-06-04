@@ -22,7 +22,7 @@ class ProgressRequestBody(private val requestBody: RequestBody, private val prog
         if (bufferedSink == null) {
             bufferedSink = Okio.buffer(sink(sink))
         }
-        requestBody.writeTo(bufferedSink)
+        requestBody.writeTo(bufferedSink!!)
         bufferedSink?.flush()
 
     }
