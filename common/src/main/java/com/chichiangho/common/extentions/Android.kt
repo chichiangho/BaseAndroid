@@ -18,8 +18,7 @@ import kotlin.collections.HashMap
 val appCtx: Context
     get() = BaseApplication.instance
 
-val topActivity: Activity?
-    get() = BaseApplication.instance.getTopActivity()
+fun getTopActivity(): Activity? = BaseApplication.instance.getTopActivity()
 
 fun getPrivateSharedPreferences(name: String? = null): SharedPreferences =
         name?.let { appCtx.getSharedPreferences(name, Context.MODE_PRIVATE) }
@@ -30,7 +29,7 @@ fun toast(string: String?, type: Int = Toast.LENGTH_SHORT) {
     if (Looper.getMainLooper() === Looper.myLooper())
         Toast.makeText(appCtx, string, type).show()
     else
-        topActivity?.runOnUiThread {
+        getTopActivity()?.runOnUiThread {
             Toast.makeText(appCtx, string, type).show()
         }
 }
@@ -45,7 +44,7 @@ fun dpToPx(dp: Int): Int =
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), appCtx.resources.displayMetrics).toInt()
 
 fun showLoading(string: String = "") {
-    topActivity?.let {
+    getTopActivity()?.let {
         LoadingDialog.with(it).setMsg(string).show()
     }
 }
