@@ -13,7 +13,6 @@ import kotlin.collections.ArrayList
 
 open class BaseApplication : Application() {
     lateinit var refWatcher: RefWatcher
-    lateinit var appContext: Context
     private val activityStack = ArrayList<Activity>()
     val lifeCycleListenerMap = HashMap<Activity, HashMap<String, ArrayList<() -> Unit>>>()
 
@@ -28,7 +27,7 @@ open class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appContext = applicationContext
+        instance = this
         refWatcher = LeakCanary.install(this)
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {

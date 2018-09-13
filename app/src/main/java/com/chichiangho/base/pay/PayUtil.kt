@@ -36,10 +36,10 @@ class PayUtil(private var activity: Activity?) {
                     return
                 }
 
-                if (!wxapi.isWXAppSupportAPI) {
-                    payListener.onFailed(PayResult.WECHAT_UNSUPPORT_ERR)
-                    return
-                }
+//                if (!wxapi.isWXAppSupportAPI) {
+//                    payListener.onFailed(PayResult.WECHAT_UNSUPPORT_ERR)
+//                    return
+//                }
 
                 // 发送支付请求：跳转到微信客户端，支付结果在WXPayEntryActivity中获取并处理
                 wxapi.sendReq(prePayInfo.weChat)

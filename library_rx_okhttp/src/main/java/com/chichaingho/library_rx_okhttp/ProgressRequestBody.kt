@@ -29,8 +29,8 @@ class ProgressRequestBody(private val requestBody: RequestBody, private val prog
 
     private fun sink(sink: Sink): Sink {
         return object : ForwardingSink(sink) {
-            internal var bytesWritten = 0L
-            internal var contentLength = 0L
+            var bytesWritten = 0L
+            var contentLength = 0L
 
             @Throws(IOException::class)
             override fun write(source: Buffer, byteCount: Long) {
