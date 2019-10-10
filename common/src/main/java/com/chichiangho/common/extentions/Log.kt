@@ -71,14 +71,14 @@ fun logToFile(time: String, msg: Any?, fileName: String) {
 
 class Logger {
     companion object {
-        val DEFAULT_TAG = "Logger"
-        val JSON_SPLIT = "( ゜- ゜)つロ"
-        private val SINGLE_DIVIDER = "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈"
-        val TOP_BORDER = '┌' + SINGLE_DIVIDER + SINGLE_DIVIDER
-        val BOTTOM_BORDER = '└' + SINGLE_DIVIDER + SINGLE_DIVIDER
-        val MIDDLE_BORDER = '├' + SINGLE_DIVIDER + SINGLE_DIVIDER
-        val JSON_INDENT = 2
-        val MAX_STACK_LINE_COUNT = 5// 打印调用栈的行數,MAX_STACK_LINE_COUNT行
+        const val DEFAULT_TAG = "Logger"
+        const val JSON_SPLIT = "( ゜- ゜)つロ"
+        private const val SINGLE_DIVIDER = "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈"
+        const val TOP_BORDER = "------->\n┌$SINGLE_DIVIDER$SINGLE_DIVIDER"
+        const val BOTTOM_BORDER = "└$SINGLE_DIVIDER$SINGLE_DIVIDER"
+        const val MIDDLE_BORDER = "├$SINGLE_DIVIDER$SINGLE_DIVIDER"
+        const val JSON_INDENT = 2
+        const val MAX_STACK_LINE_COUNT = 5// 打印调用栈的行數,MAX_STACK_LINE_COUNT行
     }
 
     internal fun e(TAG: String, msg: String) {
@@ -185,30 +185,45 @@ class Logger {
 
     private fun getMethodNames(withLastLine: Boolean = true): String {
         val sElements = Thread.currentThread().stackTrace
-        var stackOffset = getStackOffset(sElements)
-        stackOffset += 2 //Logger类和Log.kt2个方法占用了2个栈
+        val stackOffset = getStackOffset(sElements)
         val builder = StringBuilder()
+        // 添加当前线程名
         builder.append(TOP_BORDER)
-                .append("\r\n") // 添加当前线程名
+                .append("\r\n")
                 .append("┊ " + "Thread: " + Thread.currentThread().name)
                 .append("\r\n")
                 .append(MIDDLE_BORDER)
-                .append("\r\n") // 添加类名、方法名、行数
-        for (i in 0..if (sElements.size - stackOffset > MAX_STACK_LINE_COUNT - 1) MAX_STACK_LINE_COUNT - 1 else sElements.size - stackOffset) {
+                .append("\r\n")
+        // 添加类名、方法名、行数
+        var ignoreCount = 0
+        for (i in 0 until MAX_STACK_LINE_COUNT) {
+            var index = stackOffset + i + ignoreCount
+            //移除包含$的自动生成方法，线程run,execute等不重要的方法
+            while (index < sElements.size
+                    && (sElements[index].className.contains("$")
+                            || sElements[index].methodName.contains("$")
+                            || sElements[index].methodName == "run"
+                            || sElements[index].methodName == "execute"
+                            || sElements[index].methodName == "access")) {
+                ignoreCount++
+                index++
+            }
+            if (index >= sElements.size)
+                break
             builder.append("┊ ")
-                    .append(sElements[stackOffset + i].className)
+                    .append(sElements[index].className)
                     .append(".")
-                    .append(sElements[stackOffset + i].methodName)
+                    .append(sElements[index].methodName)
                     .append(" ")
                     .append(" (")
-                    .append(sElements[stackOffset + i].fileName)
-                    .append(":").append(sElements[stackOffset + i].lineNumber)
+                    .append(sElements[index].fileName)
+                    .append(":").append(sElements[index].lineNumber)
                     .append(")")
                     .append("\r\n")
         }
+        // 添加打印的日志信息
         builder.append(MIDDLE_BORDER)
-                .append("\r\n") // 添加打印的日志信息
-                .append("┊ ")
+                .append("\r\n")
                 .append("%s")
                 .append("\r\n")
         if (withLastLine)
@@ -222,8 +237,8 @@ class Logger {
         while (i < trace.size) {
             val e = trace[i]
             val name = e.className
-            if (name != Logger::class.java.name) {
-                return --i
+            if (name != javaClass.name && !name.startsWith(javaClass.`package`.name + ".LogKt")) {
+                return i
             }
             i++
         }
@@ -235,7 +250,7 @@ class Logger {
             var fileOutputStream: FileOutputStream? = null
             val fileInputStream: FileInputStream? = null
             try {
-                val file = File(Environment.getExternalStorageDirectory(), fileName)
+                val file = File(appCtx.getExternalFilesDir("logs").absolutePath + "/" + fileName)
                 fileOutputStream = FileOutputStream(file, true)
                 fileOutputStream.write(text.toByteArray())
             } catch (e: Exception) {

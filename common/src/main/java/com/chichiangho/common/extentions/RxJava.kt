@@ -9,10 +9,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
-import java.util.Collection
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
 fun <T> Emitter<T>.onNextComplete(t: T) {
     onNext(t)
@@ -28,10 +25,12 @@ fun <T> Observable<T>.autoDispose(owner: LifecycleOwner): ObservableSubscribePro
 fun <T> Observable<T>.autoDispose_io_main(owner: LifecycleOwner): ObservableSubscribeProxy<T> =
         io_main().autoDispose(owner)
 
+fun <T> Observable<ArrayList<T>>.flat(): Observable<T> = flatMap { Observable.fromIterable(it) }
+
 fun delayThenRunOnUiThread(millisecond: Long, action: () -> Unit): Disposable =
         Observable.timer(millisecond, TimeUnit.MILLISECONDS).io_main().subscribe { action.invoke() }
 
-fun <T> doInBackground(action: () -> T): Observable<T> =
+fun <T> rxDoInBackground(action: () -> T): Observable<T> =
         Observable.create<T> {
             try {
                 it.onNext(action.invoke())
@@ -41,10 +40,20 @@ fun <T> doInBackground(action: () -> T): Observable<T> =
             }
         }.subscribeOn(Schedulers.io())
 
-fun <T> Observable<ArrayList<T>>.flat(): Observable<T> = flatMap { Observable.fromIterable(it) }
+fun <T> rxRunOnUiThread(action: () -> T): Observable<T> =
+        Observable.create<T> {
+            try {
+                it.onNext(action.invoke())
+                it.onComplete()
+            } catch (e: Exception) {
+                it.onError(e)
+            }
+        }.subscribeOn(AndroidSchedulers.mainThread())
 
-fun <T, R> Observable<T>.runOnMainThread(action: (it: T) -> R): Observable<R> =
-        observeOn(AndroidSchedulers.mainThread()).flatMap { Observable.create<R> { it1 -> it1.onNext(action.invoke(it)) } }
+fun <T, R> Observable<T>.rxRunOnUiThread(action: (it: T) -> R): Observable<R> =
+        observeOn(AndroidSchedulers.mainThread()).map { action.invoke(it) }
 
-fun <T, R> Observable<T>.doInBackground(action: (it: T) -> R): Observable<R> =
-        observeOn(Schedulers.io()).flatMap { Observable.create<R> { it1 -> it1.onNext(action.invoke(it)) } }
+fun <T, R> Observable<T>.rxDoInBackground(action: (it: T) -> R): Observable<R> =
+        observeOn(Schedulers.io()).map { action.invoke(it) }
+
+fun <T> Observable<T>.commit(): Disposable = subscribe { }
